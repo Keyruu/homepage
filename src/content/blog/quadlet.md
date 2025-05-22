@@ -63,12 +63,12 @@ The problem for me is I don't really wanna write systemd units by hand, because 
 Say hello to [quadlet-nix](https://github.com/SEIAROTg/quadlet-nix). This is a flake that will do exactly what I wanted to do. Convert Nix expressions into Quadlet files. So our example from before will look like this:
 ```nix
 { config, ... }: {
-    virtualisation.quadlet.containers.sleepy = {
-        containerConfig = {
-	        image = "quay.io/fedora/fedora";
-	        exec = "sleep %i"
-	    };
+  virtualisation.quadlet.containers.sleepy = {
+    containerConfig = {
+      image = "quay.io/fedora/fedora";
+      exec = "sleep %i"
     };
+  };
 }
 ```
 

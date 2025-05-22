@@ -1,9 +1,10 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import remarkToc from 'remark-toc';
 import remarkCallout from "@r4ai/remark-callout";
+import { defineConfig } from 'astro/config';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import remarkSectionize from "remark-sectionize";
 import remarkWikilink from "remark-wiki-link";
 
 import tailwindcss from '@tailwindcss/vite';
@@ -14,11 +15,19 @@ export default defineConfig({
   integrations: [mdx(), sitemap()],
 
   markdown: {
+    shikiConfig: {
+      theme: 'ayu-dark'
+    },
     remarkPlugins: [
-      [remarkToc, { heading: 'toc', maxDepth: 3 }],
+      // [remarkToc, { heading: 'toc', maxDepth: 3 }],
       remarkCallout,
       [remarkWikilink, { aliasDivider: '|', hrefTemplate: (permalink: String) => `/blog/${permalink}` }],
+      remarkSectionize,
+      // remarkReadingTime,
     ],
+    rehypePlugins: [
+      [rehypeAutolinkHeadings, { behavior: 'append' }]
+    ]
   },
 
   vite: {

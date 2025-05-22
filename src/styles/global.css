@@ -3,45 +3,59 @@
   https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
+@import "tailwindcss";
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+  --accent: #2b65ff; /* Vibrant blue (logo color) */
+  --accent-dark: #001a80; /* Deep contrast blue */
+  --highlight: #fcdc3a; /* Yellow from the crown/key */
+  
+  --black: 10, 12, 20; /* Ultra-dark base */
+  --gray-dark: 28, 30, 45; /* Dark panels / headers */
+  --gray: 90, 105, 130; /* Muted text or borders */
+  --gray-light: 200, 215, 235; /* For text on dark bg */
+
+  --background: rgb(var(--black));
+  --foreground: rgba(var(--gray-light), 0.9);
+  --text-muted: rgba(var(--gray), 0.6);
+
+  --gray-gradient: radial-gradient(ellipse at center, #020a2a 0%, #043654 100%);
+  
+  --box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 6px 16px rgba(var(--accent), 0.15),
+    0 10px 30px rgba(0, 0, 0, 0.6);
 }
+
 @font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-regular.woff') format('woff');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
+  font-family: 'Atkinson';
+  src: url('/fonts/atkinson-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+  font-family: 'Atkinson';
+  src: url('/fonts/atkinson-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
+
 body {
-	font-family: 'Atkinson', sans-serif;
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+  font-family: 'Atkinson', sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  background: var(--gray-gradient), rgb(var(--black));
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--gray-light);
+  font-size: 18px;
+  line-height: 1.7;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 main {
 	width: 720px;
@@ -56,7 +70,7 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: rgb(var(--gray-light));
 	line-height: 1.2;
 }
 h1 {
@@ -80,9 +94,10 @@ b {
 }
 a {
 	color: var(--accent);
+  transition: color 0.2s ease-in-out;
 }
 a:hover {
-	color: var(--accent);
+	color: var(--highlight);
 }
 p {
 	margin-bottom: 1em;
@@ -107,12 +122,14 @@ img {
 }
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+  text-size: 1.1rem;
+	background-color: rgb(var(--gray-dark));
 	border-radius: 2px;
 }
 pre {
 	padding: 1.5em;
 	border-radius: 8px;
+  border: 1px solid rgba(var(--gray-light), 50%);
 }
 pre > code {
 	all: unset;
@@ -121,7 +138,7 @@ blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 0 0 0 20px;
 	margin: 0px;
-	font-size: 1.333em;
+	font-size: 1.1em;
 }
 hr {
 	border: none;
@@ -152,4 +169,53 @@ hr {
 	clip-path: inset(50%);
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
+}
+
+[data-callout][data-callout-type="info"] {
+  border-left: 4px solid var(--accent); /* vibrant blue */
+  background-color: rgba(30, 45, 70, 0.6); /* deep blue-gray with some transparency */
+  border-radius: 8px;
+  margin: 1em 0;
+  font-family: 'Atkinson', sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: var(--foreground);
+}
+
+/* Title section */
+[data-callout-type="info"] > [data-callout-title] {
+  background-color: rgba(43, 101, 255, 0.15); /* soft accent overlay */
+  padding: 0.5em 1em;
+  font-weight: bold;
+  color: var(--accent);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Body section */
+[data-callout-type="info"] > [data-callout-body] {
+  padding: 0.75em 1em;
+  color: rgba(220, 230, 245, 0.85); /* soft white-blue for body text */
+}
+
+[data-callout-type="info"] > [data-callout-body] > p {
+  margin: 0.5em 0;
+}
+
+.astro-code {
+  font-size: 1rem;
+  counter-reset: step;
+  counter-increment: step 0;
+}
+
+.astro-code .line::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  margin-right: 1.5rem;
+  display: inline-block;
+  text-align: right;
+  color: rgba(115,138,148,.4)
 }
