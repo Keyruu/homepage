@@ -37,11 +37,11 @@ const { post, headings } = Astro.props as Props;
       .toc-container {
         position: fixed;
         top: 1rem;
-        right: 2rem;
+        margin-left: 70rem;
+        margin-top: 4rem;
         width: 250px;
         max-height: 90vh;
         overflow-y: auto;
-        background: rgba(0, 0, 0, 0.8);
         padding: 1rem;
         border-radius: 8px;
         box-shadow: var(--box-shadow);
@@ -148,7 +148,7 @@ const { post, headings } = Astro.props as Props;
           const link = el as HTMLElement;
           const x = link.offsetLeft;
           const y = link.offsetTop;
-          const height = link.offsetHeight;
+          const height = link.offsetHeight - 1;
           if (i === 0) {
             // The top of the first link starts at 0px along the path.
             linkStarts.set(link, 0);

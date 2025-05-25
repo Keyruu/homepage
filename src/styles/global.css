@@ -43,6 +43,10 @@
   font-display: swap;
 }
 
+html {
+  scroll-padding-top: 80px; /* height of your fixed header */
+}
+
 body {
   font-family: 'Atkinson', sans-serif;
   margin: 0;
