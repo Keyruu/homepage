@@ -22,8 +22,25 @@ function buildToc(headings: Heading[]) {
 
 <nav class="toc">
   <ul>
+    <TableOfContentsHeading heading={{
+      subheadings: [],
+      depth: 1,
+      text: "↴",
+      id: "title",
+      slug: "title",
+    }} />
     {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
   </ul>
+  <!-- <svg class="toc-progress" xmlns="http://www.w3.org/2000/svg"> -->
+  <!--   <path -->
+  <!--     class="toc-marker" -->
+  <!--     fill="none" -->
+  <!--     stroke="currentColor" -->
+  <!--     stroke-linecap="round" -->
+  <!--     stroke-width="3" -->
+  <!--     stroke-dashoffset="1" -->
+  <!--     stroke-linejoin="round"></path> -->
+  <!-- </svg> -->
   <svg class="toc-progress" xmlns="http://www.w3.org/2000/svg">
     <path
       class="toc-marker"
@@ -32,7 +49,16 @@ function buildToc(headings: Heading[]) {
       stroke-linecap="round"
       stroke-width="3"
       stroke-dashoffset="1"
-      stroke-linejoin="round"></path>
+      stroke-linejoin="round"
+      marker-end="url(#arrowhead)"
+    ></path>
+    <!-- Separate arrowhead that we'll position manually -->
+    <polygon 
+      class="toc-arrowhead" 
+      fill="currentColor" 
+      points="0,0 10,5 0,10"
+      style="display: none;"
+    ></polygon>
   </svg>
 </nav>
 
@@ -58,6 +84,10 @@ function buildToc(headings: Heading[]) {
   }
 
   path.toc-marker {
-    transition: stroke-dasharray 0.3s ease;
+    transition: stroke-dasharray 0.5s ease-in-out;
+  }
+
+  polygon.toc-arrowhead {
+    transition:  transform 0.5s ease-in-out;
   }
 </style>

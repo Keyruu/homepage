@@ -9,9 +9,10 @@ import TableOfContents from "../components/TableOfContents.astro";
 interface Props {
   post: CollectionEntry<"blog">["data"];
   headings: import("astro").MarkdownHeading[];
+  readingTime: String
 }
 
-const { post, headings } = Astro.props as Props;
+const { post, headings, readingTime } = Astro.props as Props;
 ---
 
 <html lang="en">
@@ -37,8 +38,8 @@ const { post, headings } = Astro.props as Props;
       .toc-container {
         position: fixed;
         top: 1rem;
-        margin-left: 70rem;
-        margin-top: 4rem;
+        margin-left: 60rem;
+        margin-top: 10rem;
         width: 250px;
         max-height: 90vh;
         overflow-y: auto;
@@ -72,20 +73,22 @@ const { post, headings } = Astro.props as Props;
         <TableOfContents headings={headings} />
       </div>
       <article class="prose">
-        <div class="title">
-          <div class="date">
-            <FormattedDate date={post.pubDate} />
-            {
-              post.updatedDate && (
-                <div class="last-updated-on">
-                  Last updated on <FormattedDate date={post.updatedDate} />
-                </div>
-              )
-            }
+        <section>
+          <div class="title">
+            <div class="date">
+              <FormattedDate date={post.pubDate} /> • {readingTime}
+              {
+                post.updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={post.updatedDate} />
+                  </div>
+                )
+              }
+            </div>
+            <h1 id="title">{post.title}</h1>
+            <hr />
           </div>
-          <h1>{post.title}</h1>
-          <hr />
-        </div>
+        </section>
         <slot />
       </article>
     </main>
@@ -93,6 +96,7 @@ const { post, headings } = Astro.props as Props;
     <script>
       const linkStarts = new WeakMap();
       const linkEnds = new WeakMap();
+      let lastArrowPosition = { x: 0, y: 0 };
 
       addIntersectionObserver();
       addResizeObserver();
@@ -195,8 +199,11 @@ const { post, headings } = Astro.props as Props;
         const path = document.querySelector(
           "path.toc-marker"
         )! as SVGPathElement;
+        const arrowhead = document.querySelector(".toc-arrowhead")! as SVGPolygonElement;
         const pathLength = path.getTotalLength();
         const activeLinks = document.querySelectorAll("nav.toc a.active");
+        const allLinks = document.querySelectorAll("nav.toc a");
+
         let linkStart = pathLength;
         let linkEnd = 0;
         activeLinks.forEach((link) => {
@@ -206,12 +213,69 @@ const { post, headings } = Astro.props as Props;
           linkEnd = Math.max(linkEnd, linkEnds.get(link));
         });
         // If there are no active links, hide the path
-        path.style.display = activeLinks.length ? "inline" : "none";
+        // path.style.display = activeLinks.length ? "inline" : "none";
+        if (!activeLinks.length) {
+          path.style.display = "none";
+          arrowhead.style.display = "none";
+          return;
+        }
+
+        path.style.display = "inline";
+        arrowhead.style.display = "inline";
         // FINALLY, do the thing!
         path.setAttribute(
           "stroke-dasharray",
           `1 ${linkStart} ${linkEnd - linkStart} ${pathLength}`
         );
+
+        if (Array.from(activeLinks).includes(allLinks[allLinks.length - 1])) {
+          // Hide arrowhead when at the last heading
+          arrowhead.style.opacity = "0";
+          return;
+        }
+
+        const endPoint = path.getPointAtLength(linkEnd);
+        const beforeEndPoint = path.getPointAtLength(Math.max(0, linkEnd - 1));
+        
+        // Check if the x position changed significantly (horizontal movement)
+        const xDistance = Math.abs(endPoint.x - lastArrowPosition.x);
+        
+        if (xDistance > 0) { // Threshold for horizontal movement (adjust as needed)
+          // Fade out, move, then fade in
+          arrowhead.style.opacity = "0";
+
+          const angle = Math.atan2(endPoint.y - beforeEndPoint.y, endPoint.x - beforeEndPoint.x) * 180 / Math.PI;
+          arrowhead.setAttribute("transform", `translate(${endPoint.x - 5}, ${endPoint.y - 5}) rotate(${angle} 5 5)`);
+          
+          setTimeout(() => {
+            arrowhead.style.opacity = "1";
+            lastArrowPosition = { x: endPoint.x, y: endPoint.y };
+          }, 500);
+        } else {
+          // Vertical movement only, animate normally
+          const angle = Math.atan2(endPoint.y - beforeEndPoint.y, endPoint.x - beforeEndPoint.x) * 180 / Math.PI;
+          arrowhead.setAttribute("transform", `translate(${endPoint.x - 5}, ${endPoint.y - 5}) rotate(${angle} 5 5)`);
+          lastArrowPosition = { x: endPoint.x, y: endPoint.y };
+        }
+
+        // Position the arrowhead at the end of the visible portion
+        // const endPoint = path.getPointAtLength(linkEnd);
+        // const beforeEndPoint = path.getPointAtLength(Math.max(0, linkEnd - 1));
+        //
+        // // Calculate angle for the arrowhead
+        // // const angle = Math.atan2(endPoint.y - beforeEndPoint.y, endPoint.x - beforeEndPoint.x) * 180 / Math.PI;
+        //
+        // // Position and rotate the arrowhead
+        // // arrowhead.setAttribute("transform", `translate(${endPoint.x - 5}, ${endPoint.y - 5}) rotate(${angle} 5 5)`);
+        //
+        // // Always fade out briefly during any transition
+        // arrowhead.style.opacity = "0";
+        //
+        // setTimeout(() => {
+        //   const angle = Math.atan2(endPoint.y - beforeEndPoint.y, endPoint.x - beforeEndPoint.x) * 180 / Math.PI;
+        //   arrowhead.setAttribute("transform", `translate(${endPoint.x - 5}, ${endPoint.y - 5}) rotate(${angle} 5 5)`);
+        //   arrowhead.style.opacity = "1";
+        // }, 200);
       }
     </script>
   </body>

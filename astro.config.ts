@@ -6,6 +6,7 @@ import { defineConfig } from 'astro/config';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import remarkSectionize from "remark-sectionize";
 import remarkWikilink from "remark-wiki-link";
+import { remarkReadingTime } from './src/plugins/reading-time.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -21,9 +22,12 @@ export default defineConfig({
     remarkPlugins: [
       // [remarkToc, { heading: 'toc', maxDepth: 3 }],
       remarkCallout,
-      [remarkWikilink, { aliasDivider: '|', hrefTemplate: (permalink: String) => `/blog/${permalink}` }],
+      [remarkWikilink, {
+        aliasDivider: '|',
+        hrefTemplate: (permalink: String) => `/blog/${permalink}`,
+      }],
       remarkSectionize,
-      // remarkReadingTime,
+      remarkReadingTime,
     ],
     rehypePlugins: [
       [rehypeAutolinkHeadings, { behavior: 'append' }]

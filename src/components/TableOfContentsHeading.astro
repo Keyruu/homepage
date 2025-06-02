@@ -27,15 +27,15 @@ const { heading } = Astro.props;
   a {
     display: block;
     text-decoration: none;
-    color: var(--foreground);
+    color: rgba(var(--gray-light), 0.5);
     padding: 0.25rem 0.5rem;
   }
 
-  a:hover {
+  a:hover, a.active:hover {
     color: var(--accent);
   }
 
   a.active {
-    color: var(--accent);
+    color: var(--foreground);
   }
 </style>
