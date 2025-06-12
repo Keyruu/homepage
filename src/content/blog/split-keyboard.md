@@ -1,7 +1,7 @@
 ---
 title: Split keyboards are worth the investment
 description: Split keyboards are not common among most people and I think that's a shame.
-pubDate: 
+pubDate:
 draft: true
 tags:
   - keyboards
@@ -10,4 +10,5 @@ tags:
   - corne
   - voyager
 ---
-At least that's what I tell myself at night. A lot of money goes into the keyboard hobby, but I can tell you why 
+At least that's what I tell myself at night. A lot of money goes into the keyboard hobby, but I can tell you why
+

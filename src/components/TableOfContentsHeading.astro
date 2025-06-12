@@ -1,6 +1,8 @@
 ---
 // TableOfContentsHeading.astro
 const { heading } = Astro.props;
+const index = heading.text.indexOf('<span');
+const beforeSpan = index !== -1 ? heading.text.slice(0, index) : heading.text;
 ---
 
 <li>

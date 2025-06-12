@@ -232,6 +232,8 @@ const { post, headings, readingTime } = Astro.props as Props;
           // Hide arrowhead when at the last heading
           arrowhead.style.opacity = "0";
           return;
+        } else {
+          arrowhead.style.opacity = "1";
         }
 
         const endPoint = path.getPointAtLength(linkEnd);
