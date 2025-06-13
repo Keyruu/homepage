@@ -31,16 +31,6 @@ function buildToc(headings: Heading[]) {
     }} />
     {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
   </ul>
-  <!-- <svg class="toc-progress" xmlns="http://www.w3.org/2000/svg"> -->
-  <!--   <path -->
-  <!--     class="toc-marker" -->
-  <!--     fill="none" -->
-  <!--     stroke="currentColor" -->
-  <!--     stroke-linecap="round" -->
-  <!--     stroke-width="3" -->
-  <!--     stroke-dashoffset="1" -->
-  <!--     stroke-linejoin="round"></path> -->
-  <!-- </svg> -->
   <svg class="toc-progress" xmlns="http://www.w3.org/2000/svg">
     <path
       class="toc-marker"
@@ -52,7 +42,6 @@ function buildToc(headings: Heading[]) {
       stroke-linejoin="round"
       marker-end="url(#arrowhead)"
     ></path>
-    <!-- Separate arrowhead that we'll position manually -->
     <polygon 
       class="toc-arrowhead" 
       fill="currentColor" 
