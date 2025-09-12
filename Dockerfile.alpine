@@ -1,0 +1,55 @@
+# Stage 1: Build the application with Mill
+FROM ghcr.io/graalvm/graalvm-community:21 AS builder
+
+# Install Mill
+RUN curl -L https://github.com/com-lihaoyi/mill/releases/download/0.12.5/0.12.5 > /usr/local/bin/mill && \
+    chmod +x /usr/local/bin/mill
+
+WORKDIR /build
+
+# Copy build files first (for better caching)
+COPY build.sc ./
+COPY .scalafmt.conf ./
+
+# Fetch dependencies (cached layer)
+RUN mill app.compile
+
+# Copy source code
+COPY homepage ./homepage
+COPY graalvm-config ./graalvm-config
+
+# Build fat JAR
+RUN mill app.assembly
+
+# Build native image (dynamic linking for Alpine)
+RUN native-image \
+    -jar out/app/assembly.dest/out.jar \
+    -o homepage \
+    -H:ConfigurationFileDirectories=graalvm-config/META-INF/native-image \
+    --no-fallback \
+    --enable-http \
+    --enable-https \
+    -H:+ReportExceptionStackTraces
+
+# Stage 2: Alpine runtime (includes minimal libc)
+FROM alpine:3.20
+
+# Install required runtime dependencies
+RUN apk --no-cache add libc6-compat
+
+# Copy the native executable
+COPY --from=builder /build/homepage /usr/local/bin/homepage
+
+# Create non-root user
+RUN adduser -D -u 1001 appuser
+USER appuser
+
+# Expose port (adjust as needed)
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
+# Run the application
+ENTRYPOINT ["homepage"]

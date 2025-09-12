@@ -1,0 +1,12 @@
+out/
+.bsp/
+.metals/
+.idea/
+*.iml
+target/
+.git/
+.gitignore
+README.md
+*.log
+.DS_Store
+homepage
