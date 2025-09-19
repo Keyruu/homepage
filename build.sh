@@ -68,41 +68,35 @@ done
 
 if [ "$BUILD_LOCAL" = true ]; then
     echo -e "${GREEN}Building native image locally...${NC}"
-    
+
     # Check if GraalVM is installed
     if ! command -v native-image &> /dev/null; then
         echo -e "${RED}native-image not found. Please install GraalVM.${NC}"
         exit 1
     fi
-    
-    # Build with Mill
-    mill app.assembly
-    
+
+    # Build with SBT
+    sbt assembly
+
     # Create native image
-    native-image \
-        -jar out/app/assembly.dest/out.jar \
-        -o homepage \
-        -H:ConfigurationFileDirectories=graalvm-config/META-INF/native-image \
-        --no-fallback \
-        --enable-http \
-        --enable-https \
-        -H:+ReportExceptionStackTraces
-    
+    sbt nativeImage
+    cp target/native-image/homepage ./homepage
+
     echo -e "${GREEN}Native image built: ./homepage${NC}"
     echo -e "${YELLOW}Size: $(du -h homepage | cut -f1)${NC}"
 else
     echo -e "${GREEN}Building Docker image...${NC}"
-    
+
     # Build Docker image
     docker build \
         --platform "$PLATFORM" \
         -f "$DOCKERFILE" \
         -t "${IMAGE_NAME}:${IMAGE_TAG}" \
         .
-    
+
     echo -e "${GREEN}Docker image built: ${IMAGE_NAME}:${IMAGE_TAG}${NC}"
     echo -e "${YELLOW}Image size: $(docker images ${IMAGE_NAME}:${IMAGE_TAG} --format "{{.Size}}")${NC}"
-    
+
     if [ "$PUSH_IMAGE" = true ]; then
         echo -e "${GREEN}Pushing image to registry...${NC}"
         docker push "${IMAGE_NAME}:${IMAGE_TAG}"

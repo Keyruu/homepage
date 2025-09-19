@@ -1,37 +1,31 @@
-# Stage 1: Build the application with Mill
+# Stage 1: Build the application with SBT
 FROM ghcr.io/graalvm/graalvm-community:21 AS builder
 
-# Install Mill
-RUN curl -L https://github.com/com-lihaoyi/mill/releases/download/0.12.5/0.12.5 > /usr/local/bin/mill && \
-    chmod +x /usr/local/bin/mill
+# Install SBT
+RUN curl -L https://github.com/sbt/sbt/releases/download/v1.10.6/sbt-1.10.6.tgz | tar -xz -C /opt && \
+    ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt
 
 WORKDIR /build
 
 # Copy build files first (for better caching)
-COPY build.sc ./
+COPY build.sbt ./
+COPY project ./project
 COPY .scalafmt.conf ./
 
 # Fetch dependencies (cached layer)
-RUN mill app.compile
+RUN sbt compile
 
 # Copy source code
-COPY homepage ./homepage
-COPY graalvm-config ./graalvm-config
+COPY app ./app
+COPY content ./content
+COPY static ./static
 
 # Build fat JAR
-RUN mill app.assembly
+RUN sbt assembly
 
 # Build native image
-RUN native-image \
-    -jar out/app/assembly.dest/out.jar \
-    -o homepage \
-    -H:ConfigurationFileDirectories=graalvm-config/META-INF/native-image \
-    --no-fallback \
-    --enable-http \
-    --enable-https \
-    --static \
-    --libc=musl \
-    -H:+ReportExceptionStackTraces
+RUN sbt nativeImage && \
+    cp target/native-image/homepage ./homepage
 
 # Stage 2: Minimal runtime image (scratch)
 FROM scratch
