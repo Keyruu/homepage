@@ -1,4 +1,5 @@
 ---
+slug: nixos-for-servers
 title: Is NixOS the best OS for servers?
 description: What if every server was reproducible? If every server had the ability to rollback? Every server could be configured with one language? Meet NixOS.
 tags:

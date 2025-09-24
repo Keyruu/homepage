@@ -1,5 +1,5 @@
 ---
-id: Monitoring
+slug: monitoring
 aliases: 
 tags:
   - monitoring

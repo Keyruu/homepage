@@ -1,4 +1,5 @@
 ---
+slug: window-management
 title: The best Tiling Window Manager on MacOS? - Aerospace
 draft: false
 description: After a lot of testing and using yabai, Amethyst and Aerospace. It feels like I'm not missing out compared to Linux.

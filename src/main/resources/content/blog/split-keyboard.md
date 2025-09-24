@@ -1,4 +1,5 @@
 ---
+slug: split-keyboard
 title: Split keyboards are worth the investment
 description: Split keyboards are not common among most people and I think that's a shame.
 pubDate:

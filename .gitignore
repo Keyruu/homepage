@@ -30,3 +30,7 @@ target/
 logs/
 *.db
 config/local.*
+
+# UI
+node_modules/
+global.css

@@ -1,6 +1,6 @@
 ---
-id: Quadlet
-aliases: 
+slug: quadlet
+aliases:
 tags:
   - docker
   - nixos
@@ -138,7 +138,7 @@ I love this. You can also do so many other things with this, because Nix is a pr
 >   systemd.tmpfiles.rules = [
 >     "d ${esphomePath} 0755 root root"
 >   ];
-> 
+>
 >   virtualisation.quadlet.containers.esphome = {
 >     containerConfig = {
 >       image = "ghcr.io/esphome/esphome:2025.4.1";
@@ -165,11 +165,11 @@ I love this. You can also do so many other things with this, because Nix is a pr
 >       Restart = "always";
 >     };
 >   };
-> 
+>
 >   services.nginx.virtualHosts."esphome.port.peeraten.net" = {
 >     useACMEHost = "port.peeraten.net";
 >     forceSSL = true;
-> 
+>
 >     locations."/" = {
 >       proxyPass = "http://127.0.0.1:6052";
 >       proxyWebsockets = true;

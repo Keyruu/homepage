@@ -1,5 +1,5 @@
 ---
-id: Docker Compose on NixOS
+slug: docker-compose-on-nixos
 aliases: 
 tags:
   - docker

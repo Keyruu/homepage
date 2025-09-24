@@ -1,4 +1,5 @@
 ---
+slug: nix-darwin
 aliases: 
 tags:
   - macos

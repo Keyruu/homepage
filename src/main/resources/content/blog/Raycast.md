@@ -1,5 +1,5 @@
 ---
-id: Raycast
+slug: raycast
 aliases: []
 tags:
   - productivity

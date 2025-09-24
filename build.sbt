@@ -2,6 +2,8 @@ ThisBuild / scalaVersion := "3.7.1"
 ThisBuild / organization := "de.keyruu"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
+reStart / javaOptions += "-Djansi.passthrough=true"
+
 lazy val root = (project in file("."))
   .settings(
     name := "homepage",
@@ -24,6 +26,8 @@ lazy val root = (project in file("."))
       "com.lihaoyi" %% "scalatags" % "0.13.1",
       "org.commonmark" % "commonmark" % "0.26.0",
       "org.commonmark" % "commonmark-ext-yaml-front-matter" % "0.26.0",
+      "org.commonmark" % "commonmark-ext-gfm-tables" % "0.26.0",
+      "org.commonmark" % "commonmark-ext-heading-anchor" % "0.26.0",
 
       // Config
       "dev.zio" %% "zio-config" % "4.0.2",
@@ -32,7 +36,8 @@ lazy val root = (project in file("."))
       // Logging
       "dev.zio" %% "zio-logging" % "2.4.0",
       "dev.zio" %% "zio-logging-slf4j2" % "2.4.0",
-      "ch.qos.logback" % "logback-classic" % "1.5.18"
+      "ch.qos.logback" % "logback-classic" % "1.5.18",
+      "org.fusesource.jansi" % "jansi" % "2.4.0"
     ),
 
     // Main class

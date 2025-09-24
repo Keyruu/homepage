@@ -1,9 +1,10 @@
-package de.keyruu.homepage.data
+package de.keyruu.homepage.data.blog
 
 import java.time.LocalDate
 import zio.prelude.*
 import scala.jdk.CollectionConverters.*
 import ContentValidation.*
+import de.keyruu.homepage.logic.markdown.TocHeading
 
 final case class BlogPost(
     title: String,
@@ -13,13 +14,19 @@ final case class BlogPost(
     aliases: List[String] = List.empty,
     draft: Boolean = false,
     slug: String,
-    content: String = "",
-    htmlContent: Option[String] = None
+    markdown: String = "",
+    html: String,
+    headings: List[TocHeading],
+    wordCount: Int
 )
 
 object BlogPost:
   def validate(
-      frontmatter: java.util.Map[String, java.util.List[String]]
+      frontmatter: java.util.Map[String, java.util.List[String]],
+      markdown: String,
+      html: String,
+      headings: List[TocHeading],
+      wordCount: Int
   ): Validation[String, BlogPost] =
     val data = frontmatter.asScala.view.mapValues(_.asScala.toList).toMap
 
@@ -41,8 +48,11 @@ object BlogPost:
         .andThen(lengthBetween("description", 10, 500))
 
     val pubDateValidation =
-      nonEmpty("pubDate")(firstValue("pubDate"))
-        .flatMap(parseDate("pubDate"))
+      if boolean("draft") then
+        Validation.succeed(LocalDate.now()) // Default date for drafts
+      else
+        nonEmpty("pubDate")(firstValue("pubDate"))
+          .flatMap(parseDate("pubDate"))
 
     val slugValidation = slug(firstValue("slug"))
 
@@ -59,11 +69,20 @@ object BlogPost:
         tags = allValues("tags"),
         aliases = allValues("aliases"),
         draft = boolean("draft"),
-        slug = slug
+        slug = slug,
+        markdown = markdown,
+        html = html,
+        headings = headings,
+        wordCount = wordCount
       )
     }
 
   def fromFrontmatter(
-      frontmatter: java.util.Map[String, java.util.List[String]]
+      frontmatter: java.util.Map[String, java.util.List[String]],
+      markdown: String,
+      html: String,
+      headings: List[TocHeading],
+      wordCount: Int
   ): Either[List[String], BlogPost] =
-    validate(frontmatter).toEither.left.map(_.toList)
+    validate(frontmatter, markdown, html, headings, wordCount).toEither.left
+      .map(_.toList)

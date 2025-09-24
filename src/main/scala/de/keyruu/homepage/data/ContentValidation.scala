@@ -1,8 +1,11 @@
-package de.keyruu.homepage.data
+package de.keyruu.homepage.data.blog
 
 import java.time.LocalDate
 import zio.prelude.*
 import scala.util.Try
+
+case class ValidationException(errors: List[String])
+    extends Exception(errors.mkString(", "))
 
 object ContentValidation:
   def nonEmpty(field: String)(value: String): Validation[String, String] =
@@ -46,7 +49,7 @@ object ContentValidation:
       case _ => Validation.fail(s"Invalid boolean value for $field: $value")
 
   def slug(value: String): Validation[String, String] =
-    if value.isEmpty then Validation.fail("Slug cannot be empty")
+    if value.isEmpty then Validation.fail("slug cannot be empty")
     else if !value.matches("^[a-z0-9]+(?:-[a-z0-9]+)*$") then
       Validation.fail(s"Invalid slug format: $value")
     else Validation.succeed(value)
