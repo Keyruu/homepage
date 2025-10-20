@@ -7,19 +7,10 @@ object HeaderLink:
     val isActive = isLinkActive(linkHref, currentPath)
 
     a(
+      HeaderStyles.link,
+      if isActive then HeaderStyles.linkActive else (),
       href := linkHref,
-      cls := (if isActive then "active" else ""),
-      linkText,
-      tag("style")("""
-        me {
-          display: inline-block;
-          text-decoration: none;
-        }
-        me.active {
-          font-weight: bolder;
-          text-decoration: underline;
-        }
-      """)
+      linkText
     )
 
   private def isLinkActive(linkHref: String, currentPath: String): Boolean =

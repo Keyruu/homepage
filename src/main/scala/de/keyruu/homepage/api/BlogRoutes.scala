@@ -7,15 +7,19 @@ import zio.http.*
 import scalatags.Text
 import scalatags.Text.all._
 import de.keyruu.homepage.data.blog.BlogPost
-import de.keyruu.homepage.ui.layouts.BlogLayout
+import de.keyruu.homepage.ui.layouts.BlogPostPage
+import de.keyruu.homepage.ui.layouts.BlogPage
 
 case class BlogRoutes private (repo: BlogRepo):
   def routes: Routes[Any, Response] = Routes(
+    Method.GET / "blog" -> handler { (req: Request) =>
+      scalatagsToResponse(BlogPage(repo.getAllPosts()))
+    },
     Method.GET / "blog" / string("slug") -> handler {
       (slug: String, req: Request) =>
         repo.getPost(slug) match {
           case Some(post) =>
-            scalatagsToResponse(BlogLayout(post))
+            scalatagsToResponse(BlogPostPage(post))
           case None =>
             Response.notFound(s"Post '$slug' not found")
         }

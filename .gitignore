@@ -34,3 +34,4 @@ config/local.*
 # UI
 node_modules/
 global.css
+vendor/

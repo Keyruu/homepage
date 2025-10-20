@@ -1,93 +1,104 @@
 package de.keyruu.homepage.ui.components
 
 import scalatags.Text.all._
+import scalatags.stylesheet._
 import de.keyruu.homepage.logic.markdown.TocHeading
+
+object TocStyles extends StyleSheet {
+  initStyleSheet()
+
+  val toc = cls(
+    position := "relative",
+    paddingLeft := 0
+  )
+
+  val list = cls(
+    listStyleType := "none",
+    paddingLeft := "1.2rem",
+    marginBottom := 0
+  )
+
+  val listItem = cls(
+    listStyleType := "none"
+  )
+
+  val link = cls(
+    display := "block",
+    textDecoration := "none",
+    color := "rgba(var(--gray-light), 0.5)",
+    padding := "0.25rem 0.5rem",
+    &.hover(
+      color := "var(--accent)"
+    )
+  )
+
+  val progress = cls(
+    pointerEvents := "none",
+    position := "absolute",
+    top := 0,
+    left := 0,
+    width := "100%",
+    height := "100%",
+    color := "var(--accent)"
+  )
+
+  val marker = cls(
+    transition := "stroke-dasharray 0.5s ease-in-out"
+  )
+
+  val arrowhead = cls(
+    transition := "transform 0.5s ease-in-out"
+  )
+}
 
 object TableOfContents:
   def apply(headings: List[TocHeading]) =
     val toc = buildToc(headings)
 
-    tag("nav")(
-      cls := "toc",
-      tag("style")("""
-        me {
-          position: relative;
-          padding-left: 0;
-        }
-
-        me ul {
-          list-style-type: none;
-          padding-left: 1.2rem;
-          margin-bottom: 0;
-        }
-
-        me ul li {
-          list-style-type: none;
-        }
-
-        me svg.toc-progress {
-          pointer-events: none;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          color: var(--accent);
-        }
-
-        me path.toc-marker {
-          transition: stroke-dasharray 0.5s ease-in-out;
-        }
-
-        me polygon.toc-arrowhead {
-          transition:  transform 0.5s ease-in-out;
-        }
-
-        me a {
-          display: block;
-          text-decoration: none;
-          color: rgba(var(--gray-light), 0.5);
-          padding: 0.25rem 0.5rem;
-        }
-
-        me a:hover, me a.active:hover {
-          color: var(--accent);
-        }
-
-        me a.active {
-          color: var(--foreground);
-        }
-      """),
-      ul(
-        TableOfContentsHeading(
-          TocHeading(
-            depth = 1,
-            text =
-              "↴", // Unicode: U+21B4 - alternatively use HTML entity &#8628;
-            slug = "title",
-            subheadings = List.empty
-          )
-        ),
-        toc.map(heading => TableOfContentsHeading(heading))
+    frag(
+      tag("style")(
+        TocStyles.styleSheetText,
+        // Add the active class styles that toc.js expects
+        raw(s"""
+          nav.toc a.active {
+            color: var(--foreground);
+          }
+          nav.toc a.active:hover {
+            color: var(--accent);
+          }
+        """)
       ),
-      raw("""<svg class="toc-progress" xmlns="http://www.w3.org/2000/svg">
-        <path
-          class="toc-marker"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-width="3"
-          stroke-dashoffset="1"
-          stroke-linejoin="round"
-          marker-end="url(#arrowhead)"
-        ></path>
-        <polygon
-          class="toc-arrowhead"
-          fill="currentColor"
-          points="0,0 10,5 0,10"
-          style="display: none;"
-        ></polygon>
-      </svg>""")
+      tag("nav")(cls := s"toc ${TocStyles.toc.name}")(
+        ul(TocStyles.list)(
+          TableOfContentsHeading(
+            TocHeading(
+              depth = 1,
+              text = "↴",
+              slug = "title",
+              subheadings = List.empty
+            )
+          ),
+          toc.map(heading => TableOfContentsHeading(heading))
+        ),
+        raw(s"""<svg class="${TocStyles.progress.name}" xmlns="http://www.w3.org/2000/svg">
+          <path
+            class="toc-marker ${TocStyles.marker.name}"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="3"
+            stroke-dashoffset="1"
+            stroke-linejoin="round"
+            marker-end="url(#arrowhead)"
+          ></path>
+          <polygon
+            class="toc-arrowhead ${TocStyles.arrowhead.name}"
+            fill="currentColor"
+            points="0,0 10,5 0,10"
+            style="display: none;"
+          ></polygon>
+        </svg>""")
+      )
     )
 
   private def buildToc(headings: List[TocHeading]): List[TocHeading] =
@@ -106,7 +117,6 @@ object TableOfContents:
           )
           parentHeadings(parent.depth) = updatedParent
 
-          // Update the parent in the toc list if it's a top-level heading
           if parent.depth == 1 then
             val index = toc.indexWhere(_.slug == parent.slug)
             if index >= 0 then toc.update(index, updatedParent)

@@ -6,6 +6,8 @@ import scala.collection.mutable.ListBuffer
 import org.commonmark.renderer.text.TextContentRenderer
 import zio.ZIO
 import de.keyruu.homepage.logic.markdown.HeadingUtil.normalize
+import org.commonmark.node.{Node, Text, Link, Code}
+import de.keyruu.homepage.logic.markdown.HeadingUtil.extractText
 
 case class TocHeading(
     depth: Int,
@@ -16,10 +18,9 @@ case class TocHeading(
 
 class HeadingVisitor extends AbstractVisitor:
   val headingsBuffer: ListBuffer[TocHeading] = ListBuffer.empty;
-  private val renderer = TextContentRenderer.builder().build()
 
   override def visit(heading: Heading): Unit =
-    val text = renderer.render(heading).trim()
+    val text = extractText(heading).trim()
     val slug = normalize(text)
 
     headingsBuffer.addOne(
@@ -35,3 +36,26 @@ object HeadingUtil:
     text.toLowerCase
       .replaceAll("[^a-zA-Z0-9\\s-]+", "")
       .replaceAll("\\s+", "-")
+
+  def extractText(node: Node): String = {
+    val sb = new StringBuilder
+
+    var child = node.getFirstChild
+    while (child != null) {
+      child match {
+        case text: Text =>
+          sb.append(text.getLiteral)
+        case link: Link =>
+          // For links, only get the link text, not the URL
+          sb.append(extractText(link))
+        case code: Code =>
+          sb.append(code.getLiteral)
+        case _ =>
+          // Recursively extract text from other nodes
+          sb.append(extractText(child))
+      }
+      child = child.getNext
+    }
+
+    sb.toString
+  }

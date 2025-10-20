@@ -17,8 +17,8 @@ case class BlogRepo private (store: BlogStore):
   def getPost(slug: String): Option[BlogPost] =
     store.posts.get(slug)
 
-  def getAllPosts(): Task[List[BlogPost]] =
-    ZIO.succeed(store.posts.values.toList.sortBy(_.pubDate).reverse)
+  def getAllPosts(): List[BlogPost] =
+    store.posts.values.toList.sortBy(_.pubDate).reverse
 
   def getPostsByTag(tag: String): Task[List[BlogPost]] =
     ZIO.succeed(store.postsByTag.getOrElse(tag, List.empty))
@@ -26,14 +26,12 @@ case class BlogRepo private (store: BlogStore):
   def getAllTags(): Task[Set[String]] =
     ZIO.succeed(store.postsByTag.keySet)
 
-  def searchPosts(query: String): Task[List[BlogPost]] =
+  def searchPosts(query: String): List[BlogPost] =
     val lowerQuery = query.toLowerCase
-    getAllPosts().map { posts =>
-      posts.filter { post =>
-        post.title.toLowerCase.contains(lowerQuery) ||
-        post.description.toLowerCase.contains(lowerQuery) ||
-        post.tags.exists(_.toLowerCase.contains(lowerQuery))
-      }
+    getAllPosts().filter { post =>
+      post.title.toLowerCase.contains(lowerQuery) ||
+      post.description.toLowerCase.contains(lowerQuery) ||
+      post.tags.exists(_.toLowerCase.contains(lowerQuery))
     }
 
 object BlogRepo:

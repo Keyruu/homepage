@@ -17,7 +17,11 @@ object Head:
     frag(
       meta(charset := "utf-8"),
       meta(name := "viewport", content := "width=device-width,initial-scale=1"),
-      link(rel := "icon", `type` := "image/svg+xml", href := "/favicon.svg"),
+      link(
+        rel := "icon",
+        `type` := "image/svg+xml",
+        href := "/public/favicon.svg"
+      ),
       link(rel := "sitemap", href := "/sitemap-index.xml"),
       link(
         rel := "alternate",
@@ -26,22 +30,6 @@ object Head:
         href := rssUrl
       ),
       meta(name := "generator", content := "Keyruu"),
-
-      // Font preloads
-      link(
-        rel := "preload",
-        href := "/public/fonts/atkinson-regular.woff",
-        attr("as") := "font",
-        `type` := "font/woff",
-        attr("crossorigin") := ""
-      ),
-      link(
-        rel := "preload",
-        href := "/public/fonts/atkinson-bold.woff",
-        attr("as") := "font",
-        `type` := "font/woff",
-        attr("crossorigin") := ""
-      ),
 
       // Canonical URL
       link(rel := "canonical", href := canonicalUrl),
@@ -69,5 +57,8 @@ object Head:
       meta(attr("property") := "twitter:image", content := imageUrl),
 
       // CSS - you'll need to add this separately or inline
-      link(rel := "stylesheet", href := "/public/styles/global.css")
+      link(rel := "stylesheet", href := "/public/styles/global.css"),
+      script(
+        src := "https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js"
+      )
     )

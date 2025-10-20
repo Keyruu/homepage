@@ -17,8 +17,7 @@ object Main extends ZIOAppDefault:
     ZIO
       .serviceWithZIO[BlogRoutes] { blogRoutes =>
         val app = blogRoutes.routes @@
-          Middleware.serveResources(Path.empty / "public") @@
-          Middleware.serveResources(Path.empty / "images", "content/images")
+          Middleware.serveResources(Path.empty / "public")
         Server.serve(app)
       }
       .provide(

@@ -13,6 +13,7 @@ import de.keyruu.homepage.logic.markdown.HeadingUtil.normalize
 import org.commonmark.Extension
 import org.commonmark.renderer.html.HtmlRenderer
 import org.commonmark.renderer.html.HtmlNodeRendererFactory
+import de.keyruu.homepage.logic.markdown.HeadingUtil.extractText
 
 class SectionRenderer(context: HtmlNodeRendererContext) extends NodeRenderer:
   private val html: HtmlWriter = context.getWriter
@@ -34,7 +35,7 @@ class SectionRenderer(context: HtmlNodeRendererContext) extends NodeRenderer:
 
       html.line
       val text = renderer.render(heading)
-      val id = normalize(text)
+      val id = normalize(extractText(heading))
       html.tag("section")
       html.line
       inSection = true
