@@ -83,7 +83,7 @@ What do you say to that?
 
 I really love this, you can configure every option podman has to offer with this inside of a systemd service. Now I can start, stop and restart via systemctl. The metrics also report correctly now. This is awesome for use in my custom systemd dashboard in Grafana!
 
-![grafana-dashboard.png](/images/grafana-dashboard.png)
+![grafana-dashboard.png](../images/grafana-dashboard.png)
 
 > Why not use oci-containers that Nix offers?
 

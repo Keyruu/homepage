@@ -35,3 +35,6 @@ config/local.*
 node_modules/
 global.css
 vendor/
+src/main/resources/public/dist/
+
+.direnv

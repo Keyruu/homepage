@@ -1,6 +1,21 @@
 {
+	"type": "module",
+	"scripts": {
+		"dev": "concurrently \"npm:dev:*\"",
+		"dev:css": "tailwindcss -i ./src/main/resources/input.css -o ./src/main/resources/public/styles/global.css --watch",
+		"dev:js": "vite build --watch --mode development",
+		"build": "npm run build:css && npm run build:js",
+		"build:css": "tailwindcss -i ./src/main/resources/input.css -o ./src/main/resources/public/styles/global.css --minify",
+		"build:js": "vite build"
+	},
 	"dependencies": {
+		"alpinejs": "^3.14.0",
+		"prismjs": "^1.29.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/cli": "^4.1.13",
+		"concurrently": "^8.2.2",
 		"tailwindcss": "^4.1.13",
-		"@tailwindcss/cli": "^4.1.13"
+		"vite": "^5.4.0"
 	}
 }

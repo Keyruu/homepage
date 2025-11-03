@@ -25,6 +25,7 @@ import de.keyruu.homepage.logic.markdown.SectionizerExtension
 import de.keyruu.homepage.logic.markdown.LinkExtension
 import de.keyruu.homepage.logic.markdown.CalloutExtension
 import de.keyruu.homepage.logic.markdown.WordCountVisitor
+import de.keyruu.homepage.logic.markdown.ImageExtension
 
 case class BlogStore(
     val posts: Map[String, BlogPost],
@@ -81,7 +82,8 @@ object BlogStore:
         TablesExtension.create,
         new WikiLinkExtension,
         new SectionizerExtension,
-        new CalloutExtension
+        new CalloutExtension,
+        new ImageExtension
       )
       parserExtensions = extensions :+ YamlFrontMatterExtension.create
       parser = Parser.builder

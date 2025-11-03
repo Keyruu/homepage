@@ -56,9 +56,9 @@ object Head:
       meta(attr("property") := "twitter:description", content := description),
       meta(attr("property") := "twitter:image", content := imageUrl),
 
-      // CSS - you'll need to add this separately or inline
+      // CSS
       link(rel := "stylesheet", href := "/public/styles/global.css"),
-      script(
-        src := "https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js"
-      )
+
+      // Main JS bundle (Alpine.js for all pages)
+      script(src := "/public/dist/main.js", `type` := "module")
     )

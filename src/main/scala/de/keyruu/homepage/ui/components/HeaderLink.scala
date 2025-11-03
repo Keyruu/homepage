@@ -5,10 +5,11 @@ import scalatags.Text.all._
 object HeaderLink:
   def apply(linkHref: String, linkText: String, currentPath: String): Frag =
     val isActive = isLinkActive(linkHref, currentPath)
+    val baseClasses = "header-nav-link py-2 px-1 font-medium relative no-underline transition-colors duration-300"
+    val activeClasses = if isActive then " active" else ""
 
     a(
-      HeaderStyles.link,
-      if isActive then HeaderStyles.linkActive else (),
+      cls := baseClasses + activeClasses,
       href := linkHref,
       linkText
     )

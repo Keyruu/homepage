@@ -24,6 +24,9 @@ case class BlogRoutes private (repo: BlogRepo):
             Response.notFound(s"Post '$slug' not found")
         }
     }
+  ) @@ Middleware.serveResources(
+    Path.empty / "blog" / "images",
+    "content/images"
   )
 
   private def scalatagsToResponse(view: Frag): Response =

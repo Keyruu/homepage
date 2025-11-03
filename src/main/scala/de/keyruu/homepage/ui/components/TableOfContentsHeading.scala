@@ -5,13 +5,14 @@ import de.keyruu.homepage.logic.markdown.TocHeading
 
 object TableOfContentsHeading:
   def apply(heading: TocHeading): Frag =
-    li(TocStyles.listItem)(
-      a(TocStyles.link)(
+    li(cls := "list-none")(
+      a(
+        cls := "block no-underline py-1 px-2",
         href := s"#${heading.slug}",
         heading.text
       ),
       if heading.subheadings.nonEmpty then
-        ul(TocStyles.list)(
+        ul(cls := "list-none pl-5 mb-0")(
           heading.subheadings.map(subheading =>
             TableOfContentsHeading(subheading)
           )
