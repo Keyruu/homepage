@@ -9,7 +9,7 @@ import TableOfContents from "../components/TableOfContents.astro";
 interface Props {
   post: CollectionEntry<"blog">["data"];
   headings: import("astro").MarkdownHeading[];
-  readingTime: String
+  readingTime: String;
 }
 
 const { post, headings, readingTime } = Astro.props as Props;
@@ -47,6 +47,11 @@ const { post, headings, readingTime } = Astro.props as Props;
         border-radius: 8px;
         box-shadow: var(--box-shadow);
       }
+      @media (max-width: 720px) {
+        .toc-container {
+          display: none;
+        }
+      }
       .title {
         margin-bottom: 1em;
         padding: 1em 0;
@@ -63,11 +68,13 @@ const { post, headings, readingTime } = Astro.props as Props;
       .last-updated-on {
         font-style: italic;
       }
+
     </style>
   </head>
 
   <body>
     <Header />
+
     <main>
       <div class="toc-container">
         <TableOfContents headings={headings} />
@@ -94,12 +101,13 @@ const { post, headings, readingTime } = Astro.props as Props;
     </main>
     <Footer />
   </body>
+
   <script>
     // thanks a lot to Kevin Drum mostly copied from his blog post here: https://kld.dev/toc-animation/
     const linkStarts = new WeakMap<HTMLAnchorElement, number>();
     const linkEnds = new WeakMap<HTMLAnchorElement, number>();
     let lastArrowPosition = { x: 0, y: 0 };
-    
+
     // Store timeout ID to manage arrowhead opacity changes
     let arrowheadTimeout: NodeJS.Timeout | null = null;
 
@@ -141,9 +149,7 @@ const { post, headings, readingTime } = Astro.props as Props;
     }
 
     function drawPath() {
-      const path = document.querySelector(
-        "path.toc-marker"
-      )! as SVGPathElement;
+      const path = document.querySelector("path.toc-marker")! as SVGPathElement;
       const links = Array.from(document.querySelectorAll("nav.toc a"));
       if (!links.length) return;
 
@@ -208,13 +214,17 @@ const { post, headings, readingTime } = Astro.props as Props;
     }
 
     function updatePath() {
-      const path = document.querySelector(
-        "path.toc-marker"
-      )! as SVGPathElement;
-      const arrowhead = document.querySelector(".toc-arrowhead")! as SVGPolygonElement;
+      const path = document.querySelector("path.toc-marker")! as SVGPathElement;
+      const arrowhead = document.querySelector(
+        ".toc-arrowhead",
+      )! as SVGPolygonElement;
       const pathLength = path.getTotalLength();
-      const activeLinks = document.querySelectorAll("nav.toc a.active") as NodeListOf<HTMLAnchorElement>;
-      const allLinks = document.querySelectorAll("nav.toc a") as NodeListOf<HTMLAnchorElement>;
+      const activeLinks = document.querySelectorAll(
+        "nav.toc a.active",
+      ) as NodeListOf<HTMLAnchorElement>;
+      const allLinks = document.querySelectorAll(
+        "nav.toc a",
+      ) as NodeListOf<HTMLAnchorElement>;
 
       let linkStart = pathLength;
       let linkEnd = 0;
@@ -224,7 +234,7 @@ const { post, headings, readingTime } = Astro.props as Props;
         // Set linkEnd to the bottom of the furthest active link
         linkEnd = Math.max(linkEnd, linkEnds.get(link)!);
       });
-      
+
       // If there are no active links, hide the path
       if (!activeLinks.length) {
         clearArrowheadTimeout(); // Clear any pending timeout
@@ -235,11 +245,11 @@ const { post, headings, readingTime } = Astro.props as Props;
 
       path.style.display = "inline";
       arrowhead.style.display = "inline";
-      
+
       // FINALLY, do the thing!
       path.setAttribute(
         "stroke-dasharray",
-        `1 ${linkStart} ${linkEnd - linkStart} ${pathLength}`
+        `1 ${linkStart} ${linkEnd - linkStart} ${pathLength}`,
       );
 
       if (Array.from(activeLinks).includes(allLinks[allLinks.length - 1])) {
@@ -248,7 +258,7 @@ const { post, headings, readingTime } = Astro.props as Props;
         return;
       } else {
         clearArrowheadTimeout();
-        
+
         arrowheadTimeout = setTimeout(() => {
           arrowhead.style.opacity = "1";
           arrowheadTimeout = null;
@@ -260,12 +270,21 @@ const { post, headings, readingTime } = Astro.props as Props;
 
       const xDistance = Math.abs(endPoint.x - lastArrowPosition.x);
 
-      const angle = Math.atan2(endPoint.y - beforeEndPoint.y, endPoint.x - beforeEndPoint.x) * 180 / Math.PI;
-      arrowhead.setAttribute("transform", `translate(${endPoint.x - 5}, ${endPoint.y - 5}) rotate(${angle} 5 5)`);
+      const angle =
+        (Math.atan2(
+          endPoint.y - beforeEndPoint.y,
+          endPoint.x - beforeEndPoint.x,
+        ) *
+          180) /
+        Math.PI;
+      arrowhead.setAttribute(
+        "transform",
+        `translate(${endPoint.x - 5}, ${endPoint.y - 5}) rotate(${angle} 5 5)`,
+      );
 
       if (xDistance > 0) {
         clearArrowheadTimeout();
-        
+
         arrowhead.style.opacity = "0";
 
         arrowheadTimeout = setTimeout(() => {

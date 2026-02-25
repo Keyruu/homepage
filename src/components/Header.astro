@@ -1,13 +1,15 @@
 ---
-import HeaderLink from './HeaderLink.astro';
-import { Image } from 'astro:assets';
-import keyruuLogo from '../images/keyruu_logo.png';
-import { SITE_TITLE } from '../consts';
+import HeaderLink from "./HeaderLink.astro";
+import { Image } from "astro:assets";
+import keyruuLogo from "../images/keyruu_logo.png";
+import { SITE_TITLE } from "../consts";
 ---
 
 <header>
   <nav>
-    <a class="" href="/"><Image src={keyruuLogo} alt="Keyruu" height="100" width="100" /></a>
+    <a class="" href="/"
+      ><Image src={keyruuLogo} alt="Keyruu" height="100" width="100" /></a
+    >
     <!-- <h2><a href="/">{SITE_TITLE}</a></h2> -->
     <div class="internal-links">
       <HeaderLink href="/">home</HeaderLink>
@@ -68,7 +70,7 @@ import { SITE_TITLE } from '../consts';
   }
 
   .internal-links a::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 0px;
@@ -77,7 +79,9 @@ import { SITE_TITLE } from '../consts';
     background-color: var(--accent);
     transform: scaleX(0);
     transform-origin: right; /* default exit direction */
-    transition: transform 0.4s ease, transform-origin 0s;
+    transition:
+      transform 0.4s ease,
+      transform-origin 0s;
   }
 
   .internal-links a:hover::after {
@@ -115,4 +119,3 @@ import { SITE_TITLE } from '../consts';
     }
   }
 </style>
-
