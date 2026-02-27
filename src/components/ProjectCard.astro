@@ -1,0 +1,131 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+
+const tech = await getCollection("tech");
+const projectTech = (project.data.topics || [])
+  .map((t) => tech.find((te) => te.data.name.toLowerCase() === t.toLowerCase()))
+  .filter(Boolean);
+---
+
+<a href={project.data.url} class="project-card" target="_blank" rel="noopener noreferrer">
+  <div class="project-header">
+    <h3 class="project-name">{project.data.name}</h3>
+    <div class="project-stats">
+      {
+        project.data.stars && (
+          <span class="stat">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            {project.data.stars}
+          </span>
+        )
+      }
+      {project.data.language && <span class="stat">{project.data.language}</span>}
+    </div>
+  </div>
+  <p class="project-description">{project.data.description}</p>
+  <div class="project-tech">
+    {
+      projectTech.map(
+        (t) =>
+          t?.data.icon && (
+            <span class="tech-badge">
+              <Image src={t.data.icon} alt="" width={14} height={14} />
+              {t.data.name}
+            </span>
+          ),
+      )
+    }
+  </div>
+</a>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    background: rgba(var(--gray-dark), 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .project-name {
+    font-family: "Satoshi", sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+    color: rgb(var(--gray-light));
+  }
+  .project-stats {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+  .stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.75rem;
+    color: rgba(var(--gray), 0.7);
+  }
+  .stat svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+  .project-description {
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.9rem;
+    color: rgba(var(--gray), 0.8);
+    margin: 0 0 1rem 0;
+    line-height: 1.5;
+  }
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: auto;
+  }
+  .tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(var(--gray-dark), 0.8);
+    border: 1px solid rgba(var(--gray), 0.15);
+    border-radius: 4px;
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgb(var(--gray-light));
+  }
+  .tech-badge img {
+    width: 14px;
+    height: 14px;
+    border-radius: 0;
+  }
+</style>

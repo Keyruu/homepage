@@ -6,7 +6,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "eslint \"src/**/*.{ts,js,astro}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,js,astro}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,astro,css,json,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,astro,css,json,md}\"",
+    "check": "pnpm format:check && pnpm lint"
   },
   "dependencies": {
     "@astrojs/mdx": "4.3.13",
@@ -14,12 +19,20 @@
     "@astrojs/sitemap": "3.7.0",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.18.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@r4ai/remark-callout": "^0.6.2",
     "@types/mdast": "^4.0.4",
+    "eslint": "^10.0.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.6.0",
+    "eslint-plugin-functional": "^9.0.4",
     "mdast-util-to-string": "^4.0.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
     "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-external-links": "^3.0.0",
@@ -28,6 +41,7 @@
     "remark-sectionize": "^2.1.0",
     "remark-toc": "^9.0.0",
     "remark-wiki-link": "^2.0.1",
+    "typescript-eslint": "^8.56.1",
     "unified": "^11.0.5"
   }
 }

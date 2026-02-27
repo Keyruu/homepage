@@ -1,0 +1,32 @@
+---
+interface Props {
+  label?: string;
+  text: string;
+}
+
+const { label, text } = Astro.props;
+---
+
+{label && <span class="badge-label">{label}</span>}
+<span class="badge">{text}</span>
+
+<style>
+  .badge-label {
+    font-family: "Satoshi", sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: rgb(var(--gray));
+  }
+  .badge {
+    display: inline-block;
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.3rem 0.85rem;
+    background: rgba(var(--gray-dark), 0.8);
+    border: 1px solid
+      color-mix(in srgb, var(--release-accent, rgba(var(--gray), 0.2)) 50%, transparent);
+    border-radius: 20px;
+    color: rgb(var(--gray-light));
+  }
+</style>

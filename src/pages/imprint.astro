@@ -1,0 +1,56 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE } from "../consts";
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <BaseHead title={`Imprint - ${SITE_TITLE}`} description="Impressum / Imprint" />
+    <style>
+      main {
+        width: 720px;
+        color: rgb(var(--gray-light));
+      }
+      h1 {
+        font-family: "Satoshi", sans-serif;
+      }
+      h2 {
+        font-family: "Satoshi", sans-serif;
+        font-size: 1.25rem;
+        margin-top: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>Impressum</h1>
+
+      <h2>Angaben gem&auml;&szlig; &sect; 5 TMG</h2>
+      <p>
+        Keyruu<br />
+        c/o COCENTER<br />
+        Koppoldstr. 1<br />
+        86551 Aichach
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        Telefon: +49 (0) 8441 7873873<br />
+        E-Mail: <a href="mailto:me@keyruu.de">me@keyruu.de</a>
+      </p>
+
+      <h2>Information gem&auml;&szlig; &sect; 36 VSBG</h2>
+      <p>
+        Gem&auml;&szlig; &sect; 36 VSBG (Verbraucherstreitbeilegungsgesetz &ndash; Gesetz &uuml;ber
+        die alternative Streitbeilegung in Verbrauchersachen) erkl&auml;rt der Betreiber dieser
+        Website: Wir sind weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer
+        Verbraucherschlichtungsstelle teilzunehmen.
+      </p>
+    </main>
+    <Footer />
+  </body>
+</html>

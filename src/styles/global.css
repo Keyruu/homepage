@@ -9,7 +9,7 @@
   --accent: #2b65ff; /* Vibrant blue (logo color) */
   --accent-dark: #001a80; /* Deep contrast blue */
   --highlight: #fcdc3a; /* Yellow from the crown/key */
-  
+
   --black: 10, 12, 20; /* Ultra-dark base */
   --gray-dark: 28, 30, 45; /* Dark panels / headers */
   --gray: 90, 105, 130; /* Muted text or borders */
@@ -19,65 +19,76 @@
   --foreground: rgba(var(--gray-light), 0.9);
   --text-muted: rgba(var(--gray), 0.6);
 
-  --gray-gradient: radial-gradient(ellipse at center, #020a2a 0%, #043654 100%);
-  
+  --gray-gradient:
+    radial-gradient(ellipse at 20% 0%, rgba(43, 101, 255, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(4, 54, 84, 0.6) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(10, 12, 20, 0.3) 0%, transparent 80%);
+
   --box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.4),
-    0 6px 16px rgba(var(--accent), 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(var(--accent), 0.15),
     0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
 @font-face {
-  font-family: 'Zodiak';
-  src: url("/fonts/Zodiak-Variable.woff2") format("woff2"),
-  url("/fonts/Zodiak-Variable.woff") format("woff"),
-  url("/fonts/Zodiak-Variable.ttf") format("truetype");
+  font-family: "Zodiak";
+  src:
+    url("/fonts/Zodiak-Variable.woff2") format("woff2"),
+    url("/fonts/Zodiak-Variable.woff") format("woff"),
+    url("/fonts/Zodiak-Variable.ttf") format("truetype");
   font-weight: 200 700;
   font-display: swap;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url("/fonts/Satoshi-Variable.woff2") format("woff2"),
-  url("/fonts/Satoshi-Variable.woff") format("woff"),
-  url("/fonts/Satoshi-Variable.ttf") format("truetype");
+  font-family: "Satoshi";
+  src:
+    url("/fonts/Satoshi-Variable.woff2") format("woff2"),
+    url("/fonts/Satoshi-Variable.woff") format("woff"),
+    url("/fonts/Satoshi-Variable.ttf") format("truetype");
   font-weight: 200 700;
   font-display: swap;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'JetBrainsMono';
-  src: url("/fonts/JetBrainsMono-Variable.woff2") format("woff2"),
-  url("/fonts/JetBrainsMono-Variable.woff") format("woff"),
-  url("/fonts/JetBrainsMono-Variable.ttf") format("truetype");
+  font-family: "MapleMonoNormalNL";
+  src: url("/fonts/MapleMonoNormalNL[wght].woff2") format("woff2-variations");
   font-weight: 100 800;
   font-display: swap;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Aktura';
-  src: url("/fonts/Aktura-Regular.woff2") format("woff2"),
-  url("/fonts/Aktura-Regular.woff") format("woff"),
-  url("/fonts/Aktura-Regular.ttf") format("truetype");
+  font-family: "Syne";
+  src: url("/fonts/Syne[wght].woff2") format("woff2-variations");
+  font-weight: 400 800;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Aktura";
+  src:
+    url("/fonts/Aktura-Regular.woff2") format("woff2"),
+    url("/fonts/Aktura-Regular.woff") format("woff"),
+    url("/fonts/Aktura-Regular.ttf") format("truetype");
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Atkinson';
-  src: url('/fonts/atkinson-regular.woff') format('woff');
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Atkinson';
-  src: url('/fonts/atkinson-bold.woff') format('woff');
+  font-family: "Atkinson";
+  src: url("/fonts/atkinson-bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -88,24 +99,36 @@ html {
 }
 
 body {
-  font-family: 'Satoshi', sans-serif;
+  font-family: "Satoshi", sans-serif;
   margin: 0;
   padding: 0;
   text-align: left;
   background: var(--gray-gradient), rgb(var(--black));
   background-repeat: no-repeat;
   background-size: cover;
-  color: var(--gray-light);
+  background-attachment: fixed;
+  color: rgb(var(--gray-light));
   font-size: 18px;
   line-height: 1.7;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  pointer-events: none;
+}
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+  width: 720px;
+  max-width: calc(100% - 2em);
+  margin: auto;
+  padding: 3em 1em;
 }
 h1,
 h2,
@@ -113,188 +136,82 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Zodiak', sans-serif;
-	margin: 0 0 0.5rem 0;
+  font-family: "Zodiak", sans-serif;
+  margin: 0 0 0.5rem 0;
   font-weight: 600;
-	color: rgb(var(--gray-light));
-	line-height: 1.2;
+  color: rgb(var(--gray-light));
+  line-height: 1.2;
 }
 h1 {
-	font-size: 2.6em;
+  font-size: 2.6em;
 }
 h2 {
-	font-size: 2.2em;
+  font-size: 2.2em;
 }
 h3 {
-	font-size: 1.8em;
+  font-size: 1.8em;
 }
 h4 {
-	font-size: 1.5em;
+  font-size: 1.5em;
 }
 h5 {
-	font-size: 1.25em;
+  font-size: 1.25em;
 }
 strong,
 b {
-	font-weight: 700;
+  font-weight: 700;
 }
 a {
-	color: var(--accent);
+  color: var(--accent);
   transition: color 0.2s ease-in-out;
 }
 a:hover {
-	color: var(--highlight);
+  color: var(--highlight);
 }
-a.internal {
-  background: rgb(var(--gray-dark)); /* Slightly transparent */
-  border-radius: 0.4em;        /* rounded corners, adjust for more/less roundness */
-  padding: 0.05em 0.2em;        /* a little vertical and horizontal padding */
-  text-decoration: none;       /* optional: removes underline */
-  font-weight: 600;            /* optional: bold like your example */
-  display: inline-block;       /* ensures background wraps tightly, especially with padding */
-  transition: background 0.2s;
-}
-.icon-link::before {
-  content: "#"; /* or use your preferred unicode or leave as image, SVG, etc */
-  font-size: 0.85em; 
-  vertical-align: middle;
-  color: rgb(var(--gray));
-  margin-right: 10px;
-}
-a:hover .icon-link::before {
-  color: var(--highlight);  /* highlight color */
-}
-a[aria-hidden="true"] {
-  text-decoration: none; /* Optional: remove underline */
-}
-svg.external-icon {
-  display: inline-block;
-  vertical-align: middle; /* or 'text-top', 'top', 'sub', etc. */
-  margin-left: 0.2em;    /* optional spacing from text */
-  margin-right: 0.2em;    /* optional spacing from text */
-  height: 0.5em;
-  width: 0.5em;
-  fill: rgb(var(--gray));
-}
+
 p {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
-.prose pre {
-	margin-bottom: 1em;
-}
-/* .prose p { */
-/* 	margin-bottom: 2em; */
-/* } */
 textarea {
-	width: 100%;
-	font-size: 16px;
+  width: 100%;
+  font-size: 16px;
 }
 input {
-	font-size: 16px;
+  font-size: 16px;
 }
 table {
-	width: 100%;
+  width: 100%;
 }
 img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
-code {
-	padding: 2px 5px;
-  text-size: 1.1rem;
-	background-color: rgb(var(--gray-dark));
-	border-radius: 2px;
-}
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
-  border: 1px solid rgba(var(--gray-light), 50%);
-}
-pre > code {
-	all: unset;
-}
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-  margin-bottom: 1em;
-	font-size: 1.1em;
-}
+
 hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+  border: none;
+  border-top: 1px solid rgb(var(--gray-light));
 }
 @media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+  body {
+    font-size: 18px;
+  }
+  main {
+    padding: 1em;
+  }
 }
 
 .sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
-}
-
-[data-callout][data-callout-type="info"] {
-  border-left: 4px solid var(--accent); /* vibrant blue */
-  background-color: rgba(30, 45, 70, 0.6); /* deep blue-gray with some transparency */
-  border-radius: 8px;
-  margin: 1em 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  color: var(--foreground);
-}
-
-/* Title section */
-[data-callout-type="info"] > [data-callout-title] {
-  background-color: rgba(43, 101, 255, 0.15); /* soft accent overlay */
-  padding: 0.5em 1em;
-  font-weight: bold;
-  color: var(--accent);
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Body section */
-[data-callout-type="info"] > [data-callout-body] {
-  padding: 0.75em 1em;
-  color: rgba(220, 230, 245, 0.85); /* soft white-blue for body text */
-}
-
-[data-callout-type="info"] > [data-callout-body] > p {
-  margin-bottom: 1em;
-}
-
-.astro-code {
-  font-size: 1rem;
-  counter-reset: step;
-  counter-increment: step 0;
-}
-
-.astro-code .line::before {
-  content: counter(step);
-  counter-increment: step;
-  width: 1rem;
-  margin-right: 1.5rem;
-  display: inline-block;
-  text-align: right;
-  color: rgba(115,138,148,.4)
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  /* modern browsers, clip-path works inwards from each corner */
+  clip-path: inset(50%);
+  /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
+  white-space: nowrap;
 }

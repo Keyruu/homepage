@@ -1,18 +1,22 @@
 ---
-// TableOfContentsHeading.astro
+import type { Toc } from "../types";
+
+interface Props {
+  heading: Toc;
+}
+
 const { heading } = Astro.props;
-const index = heading.text.indexOf('<span');
-const beforeSpan = index !== -1 ? heading.text.slice(0, index) : heading.text;
 ---
 
 <li>
-  <a href={"#" + heading.slug}>
+  <a href={`#${heading.slug}`}>
     {heading.text}
   </a>
   {
     heading.subheadings.length > 0 && (
       <ul>
-        {heading.subheadings.map((subheading: Heading) => (
+        {/* eslint-disable-next-line functional/prefer-immutable-types */}
+        {heading.subheadings.map((subheading: Toc) => (
           <Astro.self heading={subheading} />
         ))}
       </ul>
@@ -33,7 +37,8 @@ const beforeSpan = index !== -1 ? heading.text.slice(0, index) : heading.text;
     padding: 0.25rem 0.5rem;
   }
 
-  a:hover, a.active:hover {
+  a:hover,
+  a.active:hover {
     color: var(--accent);
   }
 

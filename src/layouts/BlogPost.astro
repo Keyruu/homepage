@@ -9,10 +9,10 @@ import TableOfContents from "../components/TableOfContents.astro";
 interface Props {
   post: CollectionEntry<"blog">["data"];
   headings: import("astro").MarkdownHeading[];
-  readingTime: String;
+  readingTime: string;
 }
 
-const { post, headings, readingTime } = Astro.props as Props;
+const { post, headings, readingTime } = Astro.props;
 ---
 
 <html lang="en">
@@ -51,6 +51,13 @@ const { post, headings, readingTime } = Astro.props as Props;
         .toc-container {
           display: none;
         }
+        main {
+          width: 100%;
+        }
+        .prose {
+          max-width: 100%;
+          padding: 0.5em;
+        }
       }
       .title {
         margin-bottom: 1em;
@@ -69,6 +76,113 @@ const { post, headings, readingTime } = Astro.props as Props;
         font-style: italic;
       }
 
+      /* Markdown content styles (slotted, so need :global) */
+      .prose :global(pre) {
+        padding: 1.5em;
+        border-radius: 8px;
+        border: 1px solid rgba(var(--gray-light), 50%);
+        margin-bottom: 1em;
+      }
+      .prose :global(code) {
+        padding: 2px 5px;
+        font-size: 1.1rem;
+        background-color: rgb(var(--gray-dark));
+        border-radius: 2px;
+      }
+      .prose :global(pre > code) {
+        all: unset;
+      }
+      .prose :global(blockquote) {
+        border-left: 4px solid var(--accent);
+        padding: 0 0 0 20px;
+        margin-bottom: 1em;
+        font-size: 1.1em;
+      }
+      .prose :global(a.internal) {
+        background: rgb(var(--gray-dark));
+        border-radius: 0.4em;
+        padding: 0.05em 0.2em;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: background 0.2s;
+      }
+      .prose :global(.icon-link::before) {
+        content: "#";
+        font-size: 0.85em;
+        vertical-align: middle;
+        color: rgb(var(--gray));
+        margin-right: 10px;
+      }
+      .prose :global(a:hover .icon-link::before) {
+        color: var(--highlight);
+      }
+      .prose :global(a[aria-hidden="true"]) {
+        text-decoration: none;
+      }
+      .prose :global(svg.external-icon) {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 0.2em;
+        margin-right: 0.2em;
+        height: 0.5em;
+        width: 0.5em;
+        fill: rgb(var(--gray));
+      }
+
+      /* Callout styles */
+      .prose :global([data-callout][data-callout-type="info"]) {
+        border-left: 4px solid var(--accent);
+        background-color: rgba(30, 45, 70, 0.6);
+        border-radius: 8px;
+        margin: 1em 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        color: var(--foreground);
+      }
+      .prose :global([data-callout-type="info"] > [data-callout-title]) {
+        background-color: rgba(43, 101, 255, 0.15);
+        padding: 0.5em 1em;
+        font-weight: bold;
+        color: var(--accent);
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+      }
+      .prose :global([data-callout-type="info"] > [data-callout-body]) {
+        padding: 0.75em 1em;
+        color: rgba(220, 230, 245, 0.85);
+      }
+      .prose :global([data-callout-type="info"] > [data-callout-body] > p) {
+        margin-bottom: 1em;
+      }
+
+      /* Code block line numbers */
+      .prose :global(.astro-code) {
+        font-size: 1rem;
+        counter-reset: step;
+        counter-increment: step 0;
+      }
+      .prose :global(.astro-code .line::before) {
+        content: counter(step);
+        counter-increment: step;
+        width: 1rem;
+        margin-right: 1.5rem;
+        display: inline-block;
+        text-align: right;
+        color: rgba(115, 138, 148, 0.4);
+      }
+
+      @media (max-width: 720px) {
+        .prose :global(pre.astro-code) {
+          font-size: 0.85rem;
+          padding: 1em;
+        }
+        .prose :global(.astro-code .line::before) {
+          width: 0.75rem;
+          margin-right: 1rem;
+        }
+      }
     </style>
   </head>
 
@@ -83,7 +197,7 @@ const { post, headings, readingTime } = Astro.props as Props;
         <section>
           <div class="title">
             <div class="date">
-              <FormattedDate date={post.pubDate!} /> • {readingTime}
+              {post.pubDate && <FormattedDate date={post.pubDate} />} • {readingTime}
               {
                 post.updatedDate && (
                   <div class="last-updated-on">
@@ -100,15 +214,13 @@ const { post, headings, readingTime } = Astro.props as Props;
       </article>
     </main>
     <Footer />
-  </body>
-
-  <script>
+  </body><script>
     // thanks a lot to Kevin Drum mostly copied from his blog post here: https://kld.dev/toc-animation/
     const linkStarts = new WeakMap<HTMLAnchorElement, number>();
     const linkEnds = new WeakMap<HTMLAnchorElement, number>();
     let lastArrowPosition = { x: 0, y: 0 };
 
-    // Store timeout ID to manage arrowhead opacity changes
+    // store timeout ID to manage arrowhead opacity changes
     let arrowheadTimeout: NodeJS.Timeout | null = null;
 
     addIntersectionObserver();
@@ -121,11 +233,11 @@ const { post, headings, readingTime } = Astro.props as Props;
           if (!heading) return;
           const id = heading.getAttribute("id");
 
-          // Get the link to this section's heading
+          // get the link to this section's heading
           const link = document.querySelector(`nav.toc li a[href="#${id}"]`);
           if (!link) return;
 
-          // Add/remove the .active class based on whether the
+          // add/remove the .active class based on whether the
           // section is visible
           const addRemove = section.intersectionRatio > 0 ? "add" : "remove";
           link.classList[addRemove]("active");
@@ -133,23 +245,24 @@ const { post, headings, readingTime } = Astro.props as Props;
         updatePath();
       });
 
-      // Observe all the sections of the article
       document.querySelectorAll("article section").forEach((section) => {
         observer.observe(section);
       });
     }
 
     function addResizeObserver() {
-      if (!document.querySelector("nav.toc")) return;
+      const tocNav = document.querySelector("nav.toc");
+      if (!tocNav) return;
       const observer = new ResizeObserver(() => {
         drawPath();
         updatePath();
       });
-      observer.observe(document.querySelector("nav.toc")!);
+      observer.observe(tocNav);
     }
 
     function drawPath() {
-      const path = document.querySelector("path.toc-marker")! as SVGPathElement;
+      const path = document.querySelector("path.toc-marker") as SVGPathElement | null;
+      if (!path) return;
       const links = Array.from(document.querySelectorAll("nav.toc a"));
       if (!links.length) return;
 
@@ -214,25 +327,22 @@ const { post, headings, readingTime } = Astro.props as Props;
     }
 
     function updatePath() {
-      const path = document.querySelector("path.toc-marker")! as SVGPathElement;
-      const arrowhead = document.querySelector(
-        ".toc-arrowhead",
-      )! as SVGPolygonElement;
+      const path = document.querySelector("path.toc-marker") as SVGPathElement | null;
+      const arrowhead = document.querySelector(".toc-arrowhead") as SVGPolygonElement | null;
+      if (!path || !arrowhead) return;
       const pathLength = path.getTotalLength();
       const activeLinks = document.querySelectorAll(
         "nav.toc a.active",
       ) as NodeListOf<HTMLAnchorElement>;
-      const allLinks = document.querySelectorAll(
-        "nav.toc a",
-      ) as NodeListOf<HTMLAnchorElement>;
+      const allLinks = document.querySelectorAll("nav.toc a") as NodeListOf<HTMLAnchorElement>;
 
       let linkStart = pathLength;
       let linkEnd = 0;
       activeLinks.forEach((link) => {
         // Set linkStart to the top of the earliest active link
-        linkStart = Math.min(linkStart, linkStarts.get(link)!);
+        linkStart = Math.min(linkStart, linkStarts.get(link) ?? pathLength);
         // Set linkEnd to the bottom of the furthest active link
-        linkEnd = Math.max(linkEnd, linkEnds.get(link)!);
+        linkEnd = Math.max(linkEnd, linkEnds.get(link) ?? 0);
       });
 
       // If there are no active links, hide the path
@@ -247,10 +357,7 @@ const { post, headings, readingTime } = Astro.props as Props;
       arrowhead.style.display = "inline";
 
       // FINALLY, do the thing!
-      path.setAttribute(
-        "stroke-dasharray",
-        `1 ${linkStart} ${linkEnd - linkStart} ${pathLength}`,
-      );
+      path.setAttribute("stroke-dasharray", `1 ${linkStart} ${linkEnd - linkStart} ${pathLength}`);
 
       if (Array.from(activeLinks).includes(allLinks[allLinks.length - 1])) {
         clearArrowheadTimeout();
@@ -271,12 +378,7 @@ const { post, headings, readingTime } = Astro.props as Props;
       const xDistance = Math.abs(endPoint.x - lastArrowPosition.x);
 
       const angle =
-        (Math.atan2(
-          endPoint.y - beforeEndPoint.y,
-          endPoint.x - beforeEndPoint.x,
-        ) *
-          180) /
-        Math.PI;
+        (Math.atan2(endPoint.y - beforeEndPoint.y, endPoint.x - beforeEndPoint.x) * 180) / Math.PI;
       arrowhead.setAttribute(
         "transform",
         `translate(${endPoint.x - 5}, ${endPoint.y - 5}) rotate(${angle} 5 5)`,

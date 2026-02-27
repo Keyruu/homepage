@@ -1,0 +1,226 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import Badge from "./Badge.astro";
+
+interface Props {
+  release: CollectionEntry<"music">;
+}
+
+const { release } = Astro.props;
+---
+
+<div class="release" style={`--release-accent: ${release.data.accentColor};`}>
+  <div class="release-top">
+    <Image
+      class="cover"
+      src={release.data.cover}
+      alt={release.data.title}
+      width={280}
+      height={280}
+      style={`box-shadow: 0 4px 24px ${release.data.accentColor}40;`}
+    />
+    <div class="release-info">
+      <div class="release-header">
+        <h2 class="release-title">{release.data.title}</h2>
+        <Badge text={release.data.releaseType} />
+      </div>
+      <p class="release-artists">{release.data.artists}</p>
+      <p class="release-date">
+        {
+          release.data.releaseDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }
+      </p>
+      <div class="streaming-links">
+        {
+          release.data.spotify && (
+            <a
+              class="streaming-link"
+              href={release.data.spotify}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+              </svg>
+              Spotify
+            </a>
+          )
+        }
+        {
+          release.data.appleMusic && (
+            <a
+              class="streaming-link"
+              href={release.data.appleMusic}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043A5.022 5.022 0 0 0 19.7.21a10.233 10.233 0 0 0-1.755-.172C17.326.013 16.708 0 12.455 0h-.91C7.293 0 6.675.013 6.056.038A10.233 10.233 0 0 0 4.3.21a5.022 5.022 0 0 0-1.874.681C1.309 1.624.564 2.624.247 3.934a9.23 9.23 0 0 0-.24 2.19C-.019 6.742-.006 7.36-.006 11.613v.91c0 4.252-.013 4.87.013 5.489a9.23 9.23 0 0 0 .24 2.19c.317 1.31 1.062 2.31 2.18 3.043a5.022 5.022 0 0 0 1.874.681 10.233 10.233 0 0 0 1.755.172c.619.025 1.237.038 5.49.038h.91c4.252 0 4.87-.013 5.489-.038a10.233 10.233 0 0 0 1.755-.172 5.022 5.022 0 0 0 1.874-.681c1.118-.733 1.863-1.733 2.18-3.043a9.23 9.23 0 0 0 .24-2.19c.026-.618.039-1.236.039-5.489v-.91c0-4.253.013-4.871-.013-5.489zm-6.423 8.66c0 .364-.013.965-.04 1.438a3.39 3.39 0 0 1-.349 1.263 2.02 2.02 0 0 1-.781.87c-.321.192-.672.31-1.034.345-.39.038-.78.049-1.17.036a2.29 2.29 0 0 1-1.01-.243 1.42 1.42 0 0 1-.675-.665 1.837 1.837 0 0 1-.192-.905c.007-.29.075-.574.2-.834a1.74 1.74 0 0 1 .732-.755c.39-.217.813-.368 1.25-.445.452-.083.912-.14 1.374-.172V13.4a.87.87 0 0 0-.26-.625c-.166-.163-.405-.24-.718-.192a14.253 14.253 0 0 0-5.398 1.7v2.452c0 .364-.013.965-.04 1.438a3.39 3.39 0 0 1-.349 1.263 2.02 2.02 0 0 1-.781.87c-.321.192-.672.31-1.034.345-.39.038-.78.049-1.17.036a2.29 2.29 0 0 1-1.01-.243 1.42 1.42 0 0 1-.675-.665 1.837 1.837 0 0 1-.192-.905c.007-.29.075-.574.2-.834a1.74 1.74 0 0 1 .732-.755c.39-.217.813-.368 1.25-.445.452-.083.912-.14 1.374-.172v-7.697c0-.477.106-.888.317-1.234a2.49 2.49 0 0 1 .855-.835c.42-.255.875-.44 1.349-.55a14.462 14.462 0 0 1 5.622-.593c.345.04.641.188.878.442.237.253.356.567.356.94v6.01z" />
+              </svg>
+              Apple Music
+            </a>
+          )
+        }
+        {
+          release.data.youtube && (
+            <a
+              class="streaming-link"
+              href={release.data.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+              </svg>
+              YouTube
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+  {
+    release.data.tracks && release.data.tracks.length > 0 && (
+      <div class="tracklist">
+        {release.data.tracks.map((track, i) => (
+          <div class="track">
+            <span class="track-number">{i + 1}</span>
+            <span class="track-name">{track}</span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .release {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: rgba(var(--gray-dark), 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .release-top {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  .cover {
+    width: 140px;
+    min-width: 140px;
+    height: 140px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+  .release-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+  .release-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .release-title {
+    font-family: "Satoshi", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+    color: rgb(var(--gray-light));
+  }
+  .release-artists {
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.95rem;
+    color: rgb(var(--gray));
+    margin: 0;
+  }
+  .release-date {
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.8rem;
+    color: rgba(var(--gray), 0.6);
+    margin: 0.25rem 0 0 0;
+  }
+  .streaming-links {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .streaming-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid rgba(var(--gray), 0.2);
+    color: rgb(var(--gray-light));
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .streaming-link:hover {
+    border-color: var(--release-accent);
+    color: var(--release-accent);
+  }
+  .streaming-link svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+  .tracklist {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(var(--gray), 0.1);
+  }
+  .track {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    font-family: "Satoshi", sans-serif;
+    font-size: 0.85rem;
+  }
+  .track-number {
+    color: rgba(var(--gray), 0.4);
+    font-size: 0.75rem;
+    min-width: 1.5rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .track-name {
+    color: rgb(var(--gray-light));
+  }
+  @media (max-width: 720px) {
+    .release-top {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .cover {
+      width: 200px;
+      height: 200px;
+    }
+    .release-info {
+      align-items: center;
+    }
+    .streaming-links {
+      justify-content: center;
+    }
+  }
+</style>

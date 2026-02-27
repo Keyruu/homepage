@@ -1,34 +1,42 @@
 ---
 import TableOfContentsHeading from "./TableOfContentsHeading.astro";
+import type { Heading, Toc } from "../types";
+
 const { headings } = Astro.props;
 const toc = buildToc(headings);
 
+/* eslint-disable functional/immutable-data -- Building a tree structure requires mutation */
 function buildToc(headings: Heading[]) {
   const toc: Toc[] = [];
-  const parentHeadings = new Map();
+  const parentHeadings = new Map<number, Toc>();
   headings.forEach((h) => {
-    const heading = { ...h, subheadings: [] };
+    const heading: Toc = { ...h, subheadings: [] };
     parentHeadings.set(heading.depth, heading);
     // Change 2 to 1 if your markdown includes your <h1>
     if (heading.depth === 1) {
       toc.push(heading);
     } else {
-      parentHeadings.get(heading.depth - 1).subheadings.push(heading);
+      const parent = parentHeadings.get(heading.depth - 1);
+      if (parent) {
+        parent.subheadings.push(heading);
+      }
     }
   });
   return toc;
 }
+/* eslint-enable functional/immutable-data */
 ---
 
 <nav class="toc">
   <ul>
-    <TableOfContentsHeading heading={{
-      subheadings: [],
-      depth: 1,
-      text: "↴",
-      id: "title",
-      slug: "title",
-    }} />
+    <TableOfContentsHeading
+      heading={{
+        subheadings: [],
+        depth: 1,
+        text: "↴",
+        slug: "title",
+      }}
+    />
     {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
   </ul>
   <svg class="toc-progress" xmlns="http://www.w3.org/2000/svg">
@@ -40,13 +48,8 @@ function buildToc(headings: Heading[]) {
       stroke-width="3"
       stroke-dashoffset="1"
       stroke-linejoin="round"
-      marker-end="url(#arrowhead)"
-    ></path>
-    <polygon 
-      class="toc-arrowhead" 
-      fill="currentColor" 
-      points="0,0 10,5 0,10"
-      style="display: none;"
+      marker-end="url(#arrowhead)"></path>
+    <polygon class="toc-arrowhead" fill="currentColor" points="0,0 10,5 0,10" style="display: none;"
     ></polygon>
   </svg>
 </nav>
@@ -77,6 +80,6 @@ function buildToc(headings: Heading[]) {
   }
 
   polygon.toc-arrowhead {
-    transition:  transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out;
   }
 </style>

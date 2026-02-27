@@ -1,0 +1,74 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import NowPlaying from "../components/NowPlaying.astro";
+import ReleaseCard from "../components/ReleaseCard.astro";
+import { SITE_TITLE } from "../consts";
+import { getCollection } from "astro:content";
+
+const allReleases = [...(await getCollection("music"))].sort(
+  (a, b) => b.data.releaseDate.valueOf() - a.data.releaseDate.valueOf(),
+);
+
+const newReleases = allReleases.filter((r) => r.data.releaseDate.getFullYear() >= 2022);
+const oldReleases = allReleases.filter((r) => r.data.releaseDate.getFullYear() < 2022);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`Music - ${SITE_TITLE}`} description="Music releases by Keyruu" />
+    <style>
+      main {
+        width: 720px;
+      }
+      .page-title {
+        font-family: "Satoshi", sans-serif;
+        margin-bottom: 2rem;
+      }
+      .releases {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .separator {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1rem 0;
+        color: rgba(var(--gray), 0.5);
+        font-family: "Satoshi", sans-serif;
+        font-size: 0.85rem;
+      }
+      .separator::before,
+      .separator::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(var(--gray), 0.15);
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <NowPlaying apiUrl="https://fm.keyruu.de/apis/web/v1" scrobblerUrl="https://fm.keyruu.de" />
+      <h1 class="page-title">Music</h1>
+      <div class="releases">
+        {newReleases.map((release) => <ReleaseCard release={release} />)}
+        {
+          oldReleases.length > 0 && (
+            <>
+              <div class="separator">old stuff</div>
+              {oldReleases.map((release) => (
+                <ReleaseCard release={release} />
+              ))}
+            </>
+          )
+        }
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

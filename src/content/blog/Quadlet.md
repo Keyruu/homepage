@@ -1,6 +1,6 @@
 ---
 id: Quadlet
-aliases: 
+aliases:
 tags:
   - docker
   - nixos
@@ -16,6 +16,7 @@ draft: false
 title: Goodbye Docker, hello Quadlet
 pubDate: 2025-05-15
 ---
+
 I use NixOS to manage my homelab and it has been awesome to have my whole homelab defined in one Git repo. Read more about what I love about NixOS [[NixOS for Servers|here]] and read about why I use containers (Docker) with Nix instead of just Nix [[Docker Compose on NixOS|here]].
 
 In my Docker Compose article I talk about running `docker compose` inside a systemd service. Also why I didn't use any of the other Nix-based options.
@@ -30,7 +31,7 @@ So, as you can see this is not an ideal solution.
 
 But as an avid homelabber, I, of course, have to rewrite my setup every few years and that led me to Quadlet.
 
-I found this by accident through some podman documentation link I've found, and I've never heard anyone talk about this before. But I read through the docs, and it sounded like *the* perfect solution for my use-case.
+I found this by accident through some podman documentation link I've found, and I've never heard anyone talk about this before. But I read through the docs, and it sounded like _the_ perfect solution for my use-case.
 
 I just wanna be able to define every part of a compose stack with Nix and don't wanna miss out on features like `depends_on` or network creation.
 
@@ -91,12 +92,12 @@ Here's the comparison matrix from the README of [quadlet-nix](https://github.com
 
 > Compared to alternatives like [`virtualisation.oci-containers`](https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/virtualisation/oci-containers.nix) or [`arion`](https://github.com/hercules-ci/arion), `quadlet-nix` is special in that:
 >
-> |                                                          | `quadlet-nix` | `oci-containers` | `arion` |
-> | -------------------------------------------------------- | ------------- | ---------------- | ------- |
-> | **Supports networks / pods**                             | ✅            | ❌               | ✅      |
-> | **Updates / deletes networks on change**                 | ✅            | /                | ❌      |
-> | **Supports [podman-auto-update][podman-auto-update]**    | ✅            | ✅               | ❌      |
-> | **Supports rootless containers**                         | ✅            | ❌               | ❓      |
+> |                                                       | `quadlet-nix` | `oci-containers` | `arion` |
+> | ----------------------------------------------------- | ------------- | ---------------- | ------- |
+> | **Supports networks / pods**                          | ✅            | ❌               | ✅      |
+> | **Updates / deletes networks on change**              | ✅            | /                | ❌      |
+> | **Supports [podman-auto-update][podman-auto-update]** | ✅            | ✅               | ❌      |
+> | **Supports rootless containers**                      | ✅            | ❌               | ❓      |
 >
 > [podman-auto-update]: https://docs.podman.io/en/latest/markdown/podman-auto-update.1.html
 
@@ -138,7 +139,7 @@ I love this. You can also do so many other things with this, because Nix is a pr
 >   systemd.tmpfiles.rules = [
 >     "d ${esphomePath} 0755 root root"
 >   ];
-> 
+>
 >   virtualisation.quadlet.containers.esphome = {
 >     containerConfig = {
 >       image = "ghcr.io/esphome/esphome:2025.4.1";
@@ -165,11 +166,11 @@ I love this. You can also do so many other things with this, because Nix is a pr
 >       Restart = "always";
 >     };
 >   };
-> 
+>
 >   services.nginx.virtualHosts."esphome.port.peeraten.net" = {
 >     useACMEHost = "port.peeraten.net";
 >     forceSSL = true;
-> 
+>
 >     locations."/" = {
 >       proxyPass = "http://127.0.0.1:6052";
 >       proxyWebsockets = true;

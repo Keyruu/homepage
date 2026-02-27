@@ -1,6 +1,6 @@
 ---
 id: Docker Compose on NixOS
-aliases: 
+aliases:
 tags:
   - docker
   - nixos
@@ -14,6 +14,7 @@ draft: false
 title: There is an easy setup for Docker Compose on NixOS
 pubDate: 2024-07-23
 ---
+
 > [!info]
 > This isn't the way I host my containers anymore. Look at [[Quadlet]] for my new method.
 

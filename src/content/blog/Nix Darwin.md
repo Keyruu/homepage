@@ -1,5 +1,5 @@
 ---
-aliases: 
+aliases:
 tags:
   - macos
   - nix
@@ -8,4 +8,3 @@ description: Nix is awesome and can even be used to configure your Mac. This is 
 draft: true
 title: How I achieve declarative configuration of my Mac using Nix
 ---
-

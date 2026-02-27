@@ -10,5 +10,5 @@ tags:
   - corne
   - voyager
 ---
-At least that's what I tell myself at night. A lot of money goes into the keyboard hobby, but I can tell you why
 
+At least that's what I tell myself at night. A lot of money goes into the keyboard hobby, but I can tell you why

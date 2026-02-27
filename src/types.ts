@@ -1,19 +1,12 @@
-// { depth: number; text: string; id: string }[]
-interface Heading {
-	depth: number;
-	text: string;
-	id: string;
+export interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
 }
 
-// {
-//   subheadings: never[];
-//   depth: number;
-//   text: string;
-//   id: string;
-// }[]
-interface Toc {
-	subheadings: Toc[];
-	depth: number;
-	text: string;
-	id: string;
+export interface Toc {
+  subheadings: Toc[];
+  depth: number;
+  slug: string;
+  text: string;
 }
