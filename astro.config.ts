@@ -12,7 +12,7 @@ import { remarkReadingTime } from "./src/plugins/reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://keyruu.de",
   integrations: [mdx(), sitemap()],
 
   markdown: {
@@ -20,7 +20,6 @@ export default defineConfig({
       theme: "ayu-dark",
     },
     remarkPlugins: [
-      // [remarkToc, { heading: 'toc', maxDepth: 3 }],
       remarkCallout,
       [
         remarkWikilink,
