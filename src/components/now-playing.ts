@@ -47,11 +47,12 @@ export function initNowPlaying(container: HTMLDivElement, apiUrl: string): void 
 
   const coverImg = container.querySelector<HTMLImageElement>(".now-playing-cover");
   const skeletonCover = container.querySelector<HTMLDivElement>(".skeleton-cover");
+  const coverPaused = container.querySelector<HTMLDivElement>(".now-playing-cover-paused");
   const trackEl = container.querySelector<HTMLParagraphElement>(".now-playing-track");
   const artistEl = container.querySelector<HTMLParagraphElement>(".now-playing-artist");
   const statusEl = container.querySelector<HTMLSpanElement>(".now-playing-status");
 
-  if (!coverImg || !skeletonCover || !trackEl || !artistEl || !statusEl) return;
+  if (!coverImg || !skeletonCover || !coverPaused || !trackEl || !artistEl || !statusEl) return;
 
   function update({ track, status }: UpdateParams): void {
     if (!track.title) {
@@ -65,6 +66,12 @@ export function initNowPlaying(container: HTMLDivElement, apiUrl: string): void 
     trackEl!.textContent = track.title;
     artistEl!.textContent = artistNames;
     statusEl!.textContent = statusText[status];
+
+    if (status === "recent") {
+      coverPaused!.style.display = "flex";
+    } else {
+      coverPaused!.style.display = "none";
+    }
 
     if (imageSrc) {
       coverImg!.src = `https://fm.keyruu.de/images/full/${imageSrc}`;

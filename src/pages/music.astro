@@ -22,10 +22,15 @@ const oldReleases = allReleases.filter((r) => r.data.releaseDate.getFullYear() <
     <style>
       main {
         width: 720px;
+        position: relative;
+        padding: 0 1em;
       }
       .page-title {
         font-family: "Satoshi", sans-serif;
         margin-bottom: 2rem;
+      }
+      .music-content {
+        padding-top: 1rem;
       }
       .releases {
         display: flex;
@@ -54,19 +59,21 @@ const oldReleases = allReleases.filter((r) => r.data.releaseDate.getFullYear() <
     <Header />
     <main>
       <NowPlaying apiUrl="https://fm.keyruu.de/apis/web/v1" scrobblerUrl="https://fm.keyruu.de" />
-      <h1 class="page-title">Music</h1>
-      <div class="releases">
-        {newReleases.map((release) => <ReleaseCard release={release} />)}
-        {
-          oldReleases.length > 0 && (
-            <>
-              <div class="separator">old stuff</div>
-              {oldReleases.map((release) => (
-                <ReleaseCard release={release} />
-              ))}
-            </>
-          )
-        }
+      <div class="music-content">
+        <h1 class="page-title">music</h1>
+        <div class="releases">
+          {newReleases.map((release) => <ReleaseCard release={release} />)}
+          {
+            oldReleases.length > 0 && (
+              <>
+                <div class="separator">old stuff</div>
+                {oldReleases.map((release) => (
+                  <ReleaseCard release={release} />
+                ))}
+              </>
+            )
+          }
+        </div>
       </div>
     </main>
     <Footer />

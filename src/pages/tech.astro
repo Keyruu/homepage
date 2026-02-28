@@ -103,13 +103,11 @@ const categoryLabels: Record<(typeof categories)[number], string> = {
   <body>
     <Header />
     <main>
-      <h1 class="section-title">Projects</h1>
+      <h1 class="section-title">projects</h1>
       <div class="projects-grid">
-        {projects.map((project) => (
-          <ProjectCard project={project} />
-        ))}
+        {projects.map((project) => <ProjectCard project={project} />)}
       </div>
-      <h1 class="section-title">Tech</h1>
+      <h1 class="section-title">tech</h1>
       {
         categories.map((cat) => {
           const items = tech.filter((t) => t.data.category === cat);
