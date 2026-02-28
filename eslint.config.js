@@ -41,10 +41,7 @@ export default defineConfig(
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/strict-boolean-expressions": "warn",
-      "@typescript-eslint/consistent-type-imports": [
-        "error",
-        { prefer: "type-imports" },
-      ],
+      "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
     },
   },
@@ -96,10 +93,7 @@ export default defineConfig(
   // JS config files — disable type-checked rules
   {
     files: ["**/*.js", "**/*.mjs"],
-    extends: [
-      tseslint.configs.disableTypeChecked,
-      functional.configs.disableTypeChecked,
-    ],
+    extends: [tseslint.configs.disableTypeChecked, functional.configs.disableTypeChecked],
   },
 
   // Ignore build output, dependencies, and legacy bundled files
