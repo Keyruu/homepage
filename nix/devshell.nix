@@ -5,8 +5,6 @@ perSystem.devshell.mkShell
       nodejs_24
       pnpm_10
     ];
-
-    commands = [ { package = pkgs.terraform; } ];
   }
 
   pkgs.mkShell
