@@ -11,7 +11,7 @@ pkgs.stdenvNoCC.mkDerivation rec {
     inherit src;
     pname = name;
     fetcherVersion = 2;
-    hash = "sha256-Qp+JqwA96cB2LIDJIQzrmBzdiOqQdt4P5kHXqhq0M58=";
+    hash = "sha256-7Z4EyFmD5W8o5cGMEUZFOmX2R6Oh0TEhmBSKW+gjs1k=";
   };
   buildPhase = ''
     pnpm build
