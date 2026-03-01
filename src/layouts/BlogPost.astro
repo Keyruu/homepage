@@ -17,7 +17,7 @@ const { post, headings, readingTime } = Astro.props;
 
 <html lang="en">
   <head>
-    <BaseHead title={post.title} description={post.description} />
+    <BaseHead title={post.title} description={post.description} image=`${Astro.url}og.png` />
     <style>
       main {
         display: flex;
