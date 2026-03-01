@@ -28,10 +28,10 @@ function truncateText(text: string, maxLength: number) {
 }
 
 async function generateOgImage(post: { title: string; description: string }) {
-  const [zodiakFont, satoshiRegular, faviconPng] = await Promise.all([
+  const [zodiakFont, satoshiRegular, logo] = await Promise.all([
     loadFont("Zodiak-Extrabold"),
     loadFont("Satoshi-Regular"),
-    fs.readFileSync("./public/favicon-32x32.png"),
+    fs.readFileSync("./public/keyruu_logo.png"),
   ]);
 
   const svg = await satori(
@@ -108,12 +108,12 @@ async function generateOgImage(post: { title: string; description: string }) {
                   type: "h1",
                   props: {
                     style: {
-                      fontSize: "72px",
+                      fontSize: "84px",
                       fontWeight: 800,
                       color: "#c8d7eb",
                       fontFamily: "Zodiak",
                       lineHeight: 1.1,
-                      marginBottom: "24px",
+                      marginBottom: "28px",
                       textShadow: "0 4px 20px rgba(0, 0, 0, 0.5)",
                     },
                     children: truncateText(post.title, 80),
@@ -123,11 +123,11 @@ async function generateOgImage(post: { title: string; description: string }) {
                   type: "p",
                   props: {
                     style: {
-                      fontSize: "28px",
+                      fontSize: "32px",
                       color: "rgba(200, 215, 235, 0.7)",
                       fontFamily: "Satoshi",
                       lineHeight: 1.4,
-                      maxWidth: "800px",
+                      maxWidth: "850px",
                     },
                     children: truncateText(post.description, 120),
                   },
@@ -136,39 +136,17 @@ async function generateOgImage(post: { title: string; description: string }) {
             },
           },
           {
-            type: "div",
+            type: "img",
             props: {
+              src: `data:image/png;base64,${logo.toString("base64")}`,
               style: {
                 position: "absolute",
                 bottom: "40px",
                 right: "50px",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
+                width: "100px",
+                height: "60px",
+                opacity: 0.9,
               },
-              children: [
-                {
-                  type: "img",
-                  props: {
-                    src: `data:image/png;base64,${faviconPng.toString("base64")}`,
-                    style: {
-                      width: "32px",
-                      height: "32px",
-                    },
-                  },
-                },
-                {
-                  type: "span",
-                  props: {
-                    style: {
-                      fontSize: "18px",
-                      color: "rgba(200, 215, 235, 0.5)",
-                      fontFamily: "Satoshi",
-                    },
-                    children: "keyruu.de",
-                  },
-                },
-              ],
             },
           },
           {
