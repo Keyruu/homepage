@@ -10,11 +10,18 @@ interface Props {
 const { scrobblerUrl, apiUrl } = Astro.props;
 ---
 
-<div class="now-playing" data-api-url={apiUrl}>
+<div class="now-playing paused" data-api-url={apiUrl}>
   <div class="now-playing-inner">
     <div class="now-playing-cover-wrapper">
-      <div class="skeleton skeleton-cover"></div>
-      <img class="now-playing-cover" src="" alt="" width="48" height="48" style="display: none;" />
+      <div class="skeleton skeleton-cover cover-margin"></div>
+      <img
+        class="now-playing-cover cover-margin"
+        src=""
+        alt=""
+        width="48"
+        height="48"
+        style="display: none;"
+      />
       <div class="now-playing-cover-paused" style="display: none;">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -109,6 +116,9 @@ const { scrobblerUrl, apiUrl } = Astro.props;
     height: 48px;
     border-radius: 6px;
     object-fit: cover;
+  }
+
+  .cover-margin {
     margin-right: 0.2rem;
     margin-right: 0.5rem;
   }
@@ -239,7 +249,7 @@ const { scrobblerUrl, apiUrl } = Astro.props;
 
   .skeleton {
     display: inline-block;
-    background: rgba(var(--gray), 0.2);
+    background: rgba(var(--gray), 0.6);
     border-radius: 4px;
     animation: skeleton-pulse 1.5s ease-in-out infinite;
   }
@@ -275,7 +285,7 @@ const { scrobblerUrl, apiUrl } = Astro.props;
   import { initNowPlaying } from "./now-playing";
 
   const container = document.querySelector(".now-playing");
-  if (container instanceof HTMLElement) {
+  if (container instanceof HTMLDivElement) {
     initNowPlaying(container, container.dataset.apiUrl ?? "");
   }
 </script>
