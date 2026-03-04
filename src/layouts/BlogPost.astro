@@ -35,6 +35,12 @@ const { post, headings, readingTime } = Astro.props;
         color: rgb(var(--gray-light));
         position: relative;
       }
+      .comments {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: 2em auto;
+        padding: 1em;
+      }
       .toc-container {
         position: fixed;
         top: 1rem;
@@ -209,6 +215,24 @@ const { post, headings, readingTime } = Astro.props;
         </section>
         <slot />
       </article>
+      <section class="comments">
+        <script
+          src="https://giscus.app/client.js"
+          data-repo="Keyruu/blog-discussion"
+          data-repo-id="R_kgDOMYH8cw"
+          data-category="Announcements"
+          data-category-id="DIC_kwDOMYH8c84Cg-En"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="preferred_color_scheme"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async></script>
+      </section>
     </main>
     <Footer />
   </body><script>

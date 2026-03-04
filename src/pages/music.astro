@@ -60,7 +60,7 @@ const oldReleases = allReleases.filter((r) => r.data.releaseDate.getFullYear() <
     <main>
       <NowPlaying apiUrl="https://fm.keyruu.de/apis/web/v1" scrobblerUrl="https://fm.keyruu.de" />
       <div class="music-content">
-        <h1 class="page-title">music</h1>
+        <h1 class="page-title">my music</h1>
         <div class="releases">
           {newReleases.map((release) => <ReleaseCard release={release} />)}
           {
