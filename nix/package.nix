@@ -10,8 +10,9 @@ pkgs.stdenvNoCC.mkDerivation rec {
   pnpmDeps = pkgs.fetchPnpmDeps {
     inherit src;
     pname = name;
+    pnpm = pkgs.pnpm;
     fetcherVersion = 2;
-    hash = "sha256-7Z4EyFmD5W8o5cGMEUZFOmX2R6Oh0TEhmBSKW+gjs1k=";
+    hash = "sha256-ZYmk1WY/v/sGj7rQL19pMs8UOzJQNhrlDUJ8jgxIgPw=";
   };
   buildPhase = ''
     pnpm build
